@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Category Products - Bootstrap 5 Redesign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="./marble-design-system.css" rel="stylesheet">
+  <style>
+    .product-table tbody td,
+    .product-table .type-text,
+    .product-table .date-text,
+    .product-table .link-cell {
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .product-table tbody td,
+    .product-table .type-text,
+    .product-table .date-text {
+      color: #475569;
+      font-weight: 400;
+    }
+
+    .product-table .link-cell {
+      font-weight: 400;
+    }
+
+    .category-products-shell {
+      min-height: calc(100vh - 56px);
+      padding: 24px 24px 72px;
+      background: linear-gradient(180deg, #f8fafc 0%, #f5f7fb 100%);
+    }
+
+    .tab-nav.secondary-tabs {
+      padding: 0 20px;
+      margin-bottom: 0;
+    }
+
+    .tab-nav.secondary-tabs .nav-link {
+      font-size: 14px;
+    }
+
+    .action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .pager-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .pager-inline .btn {
+      min-width: 32px;
+      padding-inline: 8px;
+    }
+
+    .product-table {
+      min-width: 1320px;
+    }
+
+    .product-table thead th {
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      font-weight: 700;
+      white-space: nowrap;
+      vertical-align: bottom;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 14px 12px;
+    }
+
+    .product-table tbody td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eef2f7;
+      vertical-align: middle;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+
+    .filter-control {
+      min-width: 120px;
+    }
+
+    .sequence-input,
+    .qty-input,
+    .date-input {
+      min-width: 120px;
+    }
+
+    .link-cell {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .link-cell:hover {
+      text-decoration: underline;
+    }
+
+    .type-text,
+    .date-text {
+      color: #334155;
+      font-size: 14px;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .icon-btn-soft {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      color: #64748b;
+    }
+
+    .icon-btn-soft:hover {
+      background: #f8fafc;
+      color: #334155;
+    }
+
+    .inline-date {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .inline-date .form-control {
+      min-width: 162px;
+    }
+
+    @media (max-width: 991.98px) {
+      .category-products-shell {
+        padding: 16px 16px 72px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar d-flex align-items-center px-3 px-lg-4">
+    <div class="d-flex align-items-center gap-3 flex-grow-1 overflow-hidden">
+      <button class="btn btn-sm p-0 border-0 text-white" type="button"><i class="bi bi-list fs-5"></i></button>
+      <div class="brand d-none d-md-block">Applications</div>
+      <nav aria-label="breadcrumb" class="overflow-hidden">
+        <ol class="breadcrumb text-nowrap overflow-hidden">
+          <li class="breadcrumb-item"><a href="#">Applications</a></li>
+          <li class="breadcrumb-item"><a href="#">Marble ERP</a></li>
+          <li class="breadcrumb-item"><a href="#">Catalog</a></li>
+          <li class="breadcrumb-item"><a href="#">Categories</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Products</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="d-flex align-items-center gap-2 ms-3">
+      <a href="#" class="icon-btn text-decoration-none"><i class="bi bi-search"></i></a>
+      <span class="org-chip d-none d-md-inline-flex align-items-center gap-1"><i class="bi bi-geo-alt-fill"></i> ZIRET</span>
+      <a href="#" class="icon-btn text-decoration-none"><i class="bi bi-bell"></i></a>
+      <a href="#" class="icon-btn text-decoration-none"><i class="bi bi-clock-history"></i></a>
+      <a href="#" class="icon-btn text-decoration-none"><i class="bi bi-person-circle"></i></a>
+    </div>
+  </nav>
+
+  <main class="category-products-shell">
+    <section class="page-header d-flex flex-column flex-xl-row justify-content-between align-items-xl-start gap-3">
+      <div>
+        <div class="d-flex gap-2 flex-wrap mb-2">
+          <span class="meta-badge"><i class="bi bi-folder-fill"></i> Category</span>
+          <span class="meta-badge"><i class="bi bi-box-seam"></i> Products</span>
+        </div>
+        <h1 class="page-title">Category products</h1>
+        <p class="page-subtitle">Manage products assigned to the selected category, including sequence, effective dates, and quantity.</p>
+      </div>
+    </section>
+
+    <div class="tab-nav secondary-tabs">
+      <a class="nav-link" href="#">Category</a>
+      <a class="nav-link active" href="#">Products</a>
+      <a class="nav-link" href="#">Content</a>
+    </div>
+
+    <section class="tab-panel-shell">
+      <div class="action-row">
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add Product</button>
+          <button class="btn btn-outline-secondary"><i class="bi bi-funnel me-1"></i> Find Options</button>
+        </div>
+        <div class="pager-inline">
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-bar-left"></i></button>
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-double-left"></i></button>
+          <span>1 / 1 (1-4 / 4)</span>
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-double-right"></i></button>
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-bar-right"></i></button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table product-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>
+                <div class="filter-label">Sequence Num</div>
+              </th>
+              <th>
+                <div class="filter-label">ID</div>
+              </th>
+              <th>
+                <div class="filter-label">Name</div>
+              </th>
+              <th>
+                <div class="filter-label">Type</div>
+              </th>
+              <th>
+                <div class="filter-label">From Date</div>
+              </th>
+              <th>
+                <div class="filter-label">Thru Date</div>
+              </th>
+              <th>
+                <div class="filter-label">Quantity</div>
+              </th>
+              <th class="text-end">
+                <div class="filter-label">Actions</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="form-control sequence-input" value="1"></td>
+              <td><a href="#" class="link-cell">DEMO_TS_M</a></td>
+              <td><a href="#" class="link-cell">Men's T-Shirt</a></td>
+              <td class="type-text">Virtual (with variants)</td>
+              <td class="date-text">2010-02-03 02:00</td>
+              <td>
+                <div class="inline-date">
+                  <input class="form-control date-input" placeholder="-- / -- / -- --:--">
+                  <button class="icon-btn-soft"><i class="bi bi-calendar3"></i></button>
+                </div>
+              </td>
+              <td><input class="form-control qty-input" placeholder="Quantity"></td>
+              <td>
+                <div class="row-actions">
+                  <button class="btn btn-outline-secondary btn-sm">Update</button>
+                  <button class="icon-btn-soft"><i class="bi bi-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input class="form-control sequence-input" value="2"></td>
+              <td><a href="#" class="link-cell">DEMO_TS_W</a></td>
+              <td><a href="#" class="link-cell">Women's T-Shirt</a></td>
+              <td class="type-text">Virtual (with variants)</td>
+              <td class="date-text">2010-02-03 02:00</td>
+              <td>
+                <div class="inline-date">
+                  <input class="form-control date-input" placeholder="-- / -- / -- --:--">
+                  <button class="icon-btn-soft"><i class="bi bi-calendar3"></i></button>
+                </div>
+              </td>
+              <td><input class="form-control qty-input" placeholder="Quantity"></td>
+              <td>
+                <div class="row-actions">
+                  <button class="btn btn-outline-secondary btn-sm">Update</button>
+                  <button class="icon-btn-soft"><i class="bi bi-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input class="form-control sequence-input" value="3"></td>
+              <td><a href="#" class="link-cell">DEMO_HOOD</a></td>
+              <td><a href="#" class="link-cell">Hoodie</a></td>
+              <td class="type-text">Asset (Good)</td>
+              <td class="date-text">2010-02-03 02:00</td>
+              <td>
+                <div class="inline-date">
+                  <input class="form-control date-input" placeholder="-- / -- / -- --:--">
+                  <button class="icon-btn-soft"><i class="bi bi-calendar3"></i></button>
+                </div>
+              </td>
+              <td><input class="form-control qty-input" placeholder="Quantity"></td>
+              <td>
+                <div class="row-actions">
+                  <button class="btn btn-outline-secondary btn-sm">Update</button>
+                  <button class="icon-btn-soft"><i class="bi bi-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input class="form-control sequence-input" value="4"></td>
+              <td><a href="#" class="link-cell">DEMO_BCAP</a></td>
+              <td><a href="#" class="link-cell">Baseball Cap</a></td>
+              <td class="type-text">Asset (Good)</td>
+              <td class="date-text">2010-02-03 02:00</td>
+              <td>
+                <div class="inline-date">
+                  <input class="form-control date-input" placeholder="-- / -- / -- --:--">
+                  <button class="icon-btn-soft"><i class="bi bi-calendar3"></i></button>
+                </div>
+              </td>
+              <td><input class="form-control qty-input" placeholder="Quantity"></td>
+              <td>
+                <div class="row-actions">
+                  <button class="btn btn-outline-secondary btn-sm">Update</button>
+                  <button class="icon-btn-soft"><i class="bi bi-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-end mt-3">
+        <div class="pager-inline">
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-bar-left"></i></button>
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-double-left"></i></button>
+          <span>1 / 1 (1-4 / 4)</span>
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-double-right"></i></button>
+          <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-bar-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note d-flex justify-content-between flex-wrap gap-2">
+      <span>Bootstrap 5 category-products redesign.</span>
+      <span>Focused on tabbed data editing and dense admin workflows.</span>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
