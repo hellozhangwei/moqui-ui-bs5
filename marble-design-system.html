@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marble ERP Bootstrap 5 Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="./marble-design-system.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="topbar d-flex align-items-center px-3 px-lg-4">
+    <div class="d-flex align-items-center gap-3 flex-grow-1 overflow-hidden">
+      <button class="btn btn-sm p-0 border-0 text-white" type="button" data-sidebar-shell-toggle><i class="bi bi-list fs-5"></i></button>
+      <div class="brand d-none d-md-block">Design System</div>
+      <nav aria-label="breadcrumb" class="overflow-hidden">
+        <ol class="breadcrumb text-nowrap overflow-hidden">
+          <li class="breadcrumb-item"><a href="#">Applications</a></li>
+          <li class="breadcrumb-item"><a href="#">Marble ERP</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Bootstrap 5 Design System</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="d-flex align-items-center gap-2 ms-3">
+      <span class="org-chip d-none d-md-inline-flex align-items-center gap-1"><i class="bi bi-palette-fill"></i> UI System</span>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section class="page-header d-flex flex-column flex-xl-row justify-content-between align-items-xl-start gap-3">
+      <div>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          <span class="meta-badge"><i class="bi bi-bootstrap-fill"></i> Bootstrap 5</span>
+          <span class="meta-badge"><i class="bi bi-grid-3x3-gap-fill"></i> Enterprise ERP</span>
+          <span class="meta-badge"><i class="bi bi-brush"></i> Shared Tokens + Components</span>
+        </div>
+        <h1 class="page-title">Marble ERP Design System</h1>
+        <p class="page-subtitle">统一产品列表页、详情页、导航壳子、表单、表格和状态展示的一套 Bootstrap 5 设计基础。</p>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-secondary" href="./find-product-bootstrap5.html">Open List Page</a>
+        <a class="btn btn-primary" href="./product-detail-bootstrap5.html">Open Detail Page</a>
+      </div>
+    </section>
+
+    <section class="content-card content-card-xl mb-4">
+      <div class="section-header">
+        <h2 class="section-title">Design Principles</h2>
+        <p class="section-subtitle">这套系统优先效率、层级、可维护性，不追求花哨营销站风格。</p>
+      </div>
+      <div class="section-body">
+        <div class="row g-3">
+          <div class="col-md-6 col-xl-3"><div class="stat-card"><div class="stat-label">Density</div><div class="stat-value">High</div><div class="subtext">适合 ERP、WMS、Backoffice</div></div></div>
+          <div class="col-md-6 col-xl-3"><div class="stat-card"><div class="stat-label">Hierarchy</div><div class="stat-value">Clear</div><div class="subtext">先看摘要，再看操作，再看数据</div></div></div>
+          <div class="col-md-6 col-xl-3"><div class="stat-card"><div class="stat-label">Navigation</div><div class="stat-value">Tree Sidebar</div><div class="subtext">支持多层业务模块展开</div></div></div>
+          <div class="col-md-6 col-xl-3"><div class="stat-card"><div class="stat-label">Build Style</div><div class="stat-value">Composable</div><div class="subtext">共用 token、card、toolbar、table、form</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-card content-card-xl mb-4">
+      <div class="section-header">
+        <h2 class="section-title">Core Tokens</h2>
+        <p class="section-subtitle">建议后续页面都直接沿用这些颜色、圆角、间距和阴影。</p>
+      </div>
+      <div class="section-body">
+        <div class="token-grid">
+          <div class="token-card"><div class="color-swatch" style="background:#111827"></div><div class="fw-semibold">Navigation Background</div><div class="mono">--nav-bg: #111827</div></div>
+          <div class="token-card"><div class="color-swatch" style="background:#2563eb"></div><div class="fw-semibold">Primary Action</div><div class="mono">--primary: #2563eb</div></div>
+          <div class="token-card"><div class="color-swatch" style="background:#f5f7fb"></div><div class="fw-semibold">App Background</div><div class="mono">--app-bg: #f5f7fb</div></div>
+          <div class="token-card"><div class="color-swatch" style="background:#ffffff"></div><div class="fw-semibold">Surface</div><div class="mono">--surface: #ffffff</div></div>
+          <div class="token-card"><div class="color-swatch" style="background:#f8fafc"></div><div class="fw-semibold">Muted Surface</div><div class="mono">--surface-muted: #f8fafc</div></div>
+          <div class="token-card"><div class="color-swatch" style="background:#e5e7eb"></div><div class="fw-semibold">Border</div><div class="mono">--border: #e5e7eb</div></div>
+          <div class="token-card"><div class="color-swatch" style="background:#111827"></div><div class="fw-semibold">Text Main</div><div class="mono">--text-main: #111827</div></div>
+          <div class="token-card"><div class="color-swatch" style="background:#6b7280"></div><div class="fw-semibold">Text Muted</div><div class="mono">--text-muted: #6b7280</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-card content-card-xl mb-4">
+      <div class="section-header">
+        <h2 class="section-title">Layout Rules</h2>
+        <p class="section-subtitle">页面骨架保持一致，列表页和详情页都能无缝套进去。</p>
+      </div>
+      <div class="section-body">
+        <div class="row g-4">
+          <div class="col-xl-4">
+            <div class="component-card h-100">
+              <div class="fw-semibold mb-2">Topbar</div>
+              <div class="subtext">56px 深色顶栏，承载面包屑、全局搜索、组织切换、通知和用户入口。</div>
+            </div>
+          </div>
+          <div class="col-xl-4">
+            <div class="component-card h-100">
+              <div class="fw-semibold mb-2">Sidebar</div>
+              <div class="subtext">304px 多层树形导航，当前模块蓝色，当前页面灰底高亮。</div>
+            </div>
+          </div>
+          <div class="col-xl-4">
+            <div class="component-card h-100">
+              <div class="fw-semibold mb-2">Content Area</div>
+              <div class="subtext">24px 页面内边距，标题区先行，后面接 toolbar、card、table、form。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-card content-card-xl mb-4">
+      <div class="section-header">
+        <h2 class="section-title">Shared Components</h2>
+        <p class="section-subtitle">这几类组件已经在列表页和详情页里统一了。</p>
+      </div>
+      <div class="section-body">
+        <div class="component-grid">
+          <div class="component-card"><div class="fw-semibold mb-2">Page Header</div><div class="subtext">标题、副标题、状态 badge、主操作按钮。</div></div>
+          <div class="component-card"><div class="fw-semibold mb-2">Toolbar Card</div><div class="subtext">搜索、筛选、导出、分页、密度控制。</div></div>
+          <div class="component-card"><div class="fw-semibold mb-2">Content Card</div><div class="subtext">所有业务区块统一白底卡片、细边框、轻阴影。</div></div>
+          <div class="component-card"><div class="fw-semibold mb-2">Data Table</div><div class="subtext">sticky 表头、hover 行、主次信息双层排布。</div></div>
+          <div class="component-card"><div class="fw-semibold mb-2">Form Controls</div><div class="subtext">12px 圆角、统一 focus ring、44px 输入高度。</div></div>
+          <div class="component-card"><div class="fw-semibold mb-2">Tabs</div><div class="subtext">浅底容器 + 当前态浅蓝背景。</div></div>
+          <div class="component-card"><div class="fw-semibold mb-2">Stats Cards</div><div class="subtext">详情页上方摘要指标，先展示关键业务信息。</div></div>
+          <div class="component-card"><div class="fw-semibold mb-2">Empty State</div><div class="subtext">虚线框 + 人话说明，避免大片空白。</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-card content-card-xl mb-4">
+      <div class="section-header">
+        <h2 class="section-title">Section Header Spec</h2>
+        <p class="section-subtitle">系统页、管理页、数据卡片统一用这套 section header，不再每块各写一套标题风格。</p>
+      </div>
+      <div class="section-body">
+        <div class="row g-4 align-items-start">
+          <div class="col-xl-7">
+            <div class="component-card h-100">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                <div>
+                  <div class="mono mb-1">LEFT</div>
+                  <div style="font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#64748b;">Installed Components</div>
+                </div>
+                <div class="text-end">
+                  <div class="mono mb-1">RIGHT</div>
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:#f8fafc;border:1px solid #eef2f7;color:#94a3b8;font-size:12px;">⌃</span>
+                </div>
+              </div>
+              <ul class="mb-0 ps-3">
+                <li class="mb-2">左侧标题统一为 <strong>12px / 700 / uppercase / slate-500</strong>。</li>
+                <li class="mb-2">字距统一 <strong>0.05em</strong>，作为 section label，不走页面主标题风格。</li>
+                <li class="mb-2">头部高度统一，推荐 <strong>min-height: 52px</strong>。</li>
+                <li class="mb-2">右侧统一放 <strong>toggle</strong> 或 <strong>meta</strong>，不要混用大按钮。</li>
+                <li>适用于 admin cards、system cards、stats cards、table cards。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xl-5">
+            <div class="component-card h-100">
+              <div class="fw-semibold mb-2">Recommended structure</div>
+              <pre class="mono mb-0" style="white-space:pre-wrap">.section-card-header
+  .section-card-title
+  .section-card-toggle | .section-card-meta</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-card content-card-xl mb-4">
+      <div class="section-header">
+        <h2 class="section-title">Buttons and States</h2>
+        <p class="section-subtitle">主次操作层级要稳定，危险操作单独处理。</p>
+      </div>
+      <div class="section-body d-flex gap-2 flex-wrap">
+        <button class="btn btn-primary">Primary Action</button>
+        <button class="btn btn-outline-secondary">Secondary Action</button>
+        <button class="btn btn-soft-danger">Danger Action</button>
+        <span class="meta-badge"><i class="bi bi-check-circle-fill text-success"></i> Active</span>
+        <span class="org-badge"><i class="bi bi-building"></i> ZIRET</span>
+      </div>
+    </section>
+
+    <section class="content-card content-card-xl">
+      <div class="section-header">
+        <h2 class="section-title">Usage Guidance</h2>
+        <p class="section-subtitle">后面继续扩页面时，建议保持这些规则别跑偏。</p>
+      </div>
+      <div class="section-body">
+        <ul class="mb-0 ps-3">
+          <li class="mb-2">列表页固定采用：标题区 → toolbar → table/card 的顺序。</li>
+          <li class="mb-2">详情页固定采用：摘要区 → tabs → 主表单区 + 辅助信息区。</li>
+          <li class="mb-2">所有模块导航沿用同一 sidebar 样式，不为单页单独造菜单。</li>
+          <li class="mb-2">所有新页面优先复用 .content-card、.section-header、.section-body、.meta-badge、.empty-state。</li>
+          <li>如果你后面要继续扩成整套 ERP，我建议下一步补：dashboard、form wizard、modal、offcanvas filter、kanban/list 双视图。</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./marble-design-system.js"></script>
+</body>
+</html>

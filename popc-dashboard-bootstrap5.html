@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POPC ERP Dashboard - Bootstrap 5 Redesign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="./marble-design-system.css" rel="stylesheet">
+  <style>
+    .dashboard-shell {
+      min-height: calc(100vh - 56px);
+      padding: 24px 24px 72px;
+      background: linear-gradient(180deg, #f8fafc 0%, #f5f7fb 100%);
+    }
+
+    .page-header-wrap {
+      margin-bottom: 24px;
+    }
+
+    .dashboard-toolbar {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 16px;
+      margin-bottom: 24px;
+      align-items: stretch;
+      grid-auto-rows: 136px;
+    }
+
+    .dashboard-toolbar > .content-card {
+      height: 136px;
+      min-height: 136px;
+      align-self: stretch;
+      box-sizing: border-box;
+    }
+
+    .toolbar-card-inner {
+      padding: 20px;
+      min-height: 136px;
+      height: 136px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      box-sizing: border-box;
+    }
+
+    .toolbar-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--text-muted);
+      margin: 0 0 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .quick-search-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr auto;
+      gap: 12px;
+      align-items: end;
+      margin-top: auto;
+    }
+
+    .lookup-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: end;
+      margin-top: auto;
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-label {
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 30px;
+      font-weight: 650;
+      line-height: 1;
+      margin-bottom: 10px;
+      color: #334155;
+      letter-spacing: -.02em;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .status-chip .badge {
+      background: rgba(37, 99, 235, .16);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr .9fr;
+      gap: 16px;
+    }
+
+    .module-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .module-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 12px;
+    }
+
+    .module-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .module-subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    .module-body {
+      padding: 20px;
+    }
+
+    .launch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .launch-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 148px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff 0%, #fbfdff 100%);
+      color: var(--text-main);
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .launch-card:hover {
+      transform: translateY(-2px);
+      border-color: #bfdbfe;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, .08);
+      color: var(--text-main);
+    }
+
+    .launch-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #eff6ff;
+      color: var(--primary);
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .launch-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: #334155;
+      letter-spacing: -.01em;
+    }
+
+    .launch-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      line-height: 1.45;
+    }
+
+    .report-link {
+      display: block;
+      margin-top: 14px;
+      text-align: center;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .activity-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .activity-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: #334155;
+      letter-spacing: -.01em;
+      margin-bottom: 4px;
+    }
+
+    .activity-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 0;
+    }
+
+    .footer-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: #3f3f46;
+      color: rgba(255,255,255,.9);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 10;
+    }
+
+    @media (max-width: 1399.98px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .metric-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      .dashboard-toolbar,
+      .dashboard-grid,
+      .metric-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-toolbar > .content-card,
+      .toolbar-card-inner {
+        min-height: auto;
+        height: auto;
+      }
+
+      .quick-search-grid,
+      .lookup-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        font-size: 28px;
+      }
+
+      .dashboard-shell {
+        padding: 16px 16px 72px;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .launch-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar d-flex align-items-center px-3 px-lg-4">
+    <div class="d-flex align-items-center gap-3 flex-grow-1 overflow-hidden">
+      <button class="btn btn-sm p-0 border-0 text-white" type="button"><i class="bi bi-list fs-5"></i></button>
+      <div class="brand d-none d-md-block">Applications</div>
+      <nav aria-label="breadcrumb" class="overflow-hidden">
+        <ol class="breadcrumb text-nowrap overflow-hidden">
+          <li class="breadcrumb-item"><a href="#">Applications</a></li>
+          <li class="breadcrumb-item"><a href="#">POPC ERP</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="d-flex align-items-center gap-2 ms-3">
+      <a href="#" class="icon-btn"><i class="bi bi-search"></i></a>
+      <span class="org-chip d-none d-md-inline-flex align-items-center gap-1"><i class="bi bi-geo-alt-fill"></i> ZIRET</span>
+      <a href="#" class="icon-btn"><i class="bi bi-bell"></i></a>
+      <a href="#" class="icon-btn"><i class="bi bi-clock-history"></i></a>
+      <a href="#" class="icon-btn"><i class="bi bi-person-circle"></i></a>
+    </div>
+  </nav>
+
+  <main class="dashboard-shell">
+    <section class="page-header page-header-wrap d-flex flex-column flex-xl-row justify-content-between align-items-xl-start gap-3">
+      <div>
+        <div class="d-flex gap-2 flex-wrap mb-2">
+          <span class="meta-badge"><i class="bi bi-cart-fill"></i> POPC ERP</span>
+          <span class="meta-badge"><i class="bi bi-speedometer2"></i> Dashboard</span>
+        </div>
+        <h1 class="page-title">Operations overview</h1>
+        <p class="page-subtitle">Search, monitor queues, and jump into core workflows.</p>
+      </div>
+      <div class="chip-row">
+        <span class="status-chip">Orders <span class="badge rounded-pill">6</span></span>
+        <span class="status-chip">Requests <span class="badge rounded-pill">1</span></span>
+      </div>
+    </section>
+
+    <section class="dashboard-toolbar">
+      <div class="content-card content-card-xl toolbar-card-inner">
+        <div class="toolbar-label">Global Search</div>
+        <div class="quick-search-grid">
+          <select class="form-select">
+            <option selected>Any Type</option>
+            <option>Products</option>
+            <option>Orders</option>
+            <option>Customers</option>
+            <option>Requests</option>
+          </select>
+          <input class="form-control" placeholder="Search orders, customers, products, requests..." />
+          <button class="btn btn-primary">Search</button>
+        </div>
+      </div>
+
+      <div class="content-card content-card-xl toolbar-card-inner">
+        <div class="toolbar-label">Direct Lookup</div>
+        <div class="lookup-grid">
+          <input class="form-control" placeholder="Enter ID" />
+          <button class="btn btn-outline-secondary">Lookup by ID</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="metric-strip">
+      <div class="metric-card">
+        <div class="metric-label">Placed Orders</div>
+        <div class="metric-value">4</div>
+        <div class="small-muted">Awaiting review or fulfillment routing</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Approved Orders</div>
+        <div class="metric-value">2</div>
+        <div class="small-muted">Ready for downstream execution</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Held Orders</div>
+        <div class="metric-value">0</div>
+        <div class="small-muted">No blocked sales orders right now</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Submitted Requests</div>
+        <div class="metric-value">0</div>
+        <div class="small-muted">Nothing new waiting in intake</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">In Progress Requests</div>
+        <div class="metric-value">1</div>
+        <div class="small-muted">One active request in workflow</div>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <section class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-title section-title section-card-title">Operate</div>
+            <p class="module-subtitle">Daily execution flows for purchasing, orders, shipping, and returns.</p>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="launch-grid">
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-truck"></i></span><div class="launch-title">Suppliers</div><p class="launch-text">Supplier accounts, contacts, and procurement activity.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-people-fill"></i></span><div class="launch-title">Customers</div><p class="launch-text">Customer records, relationships, and account access.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-paperclip"></i></span><div class="launch-title">Purchase Orders</div><p class="launch-text">Create, track, and manage incoming purchase commitments.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-lightbulb"></i></span><div class="launch-title">Requests</div><p class="launch-text">Requests, tickets, and internal follow-up workflows.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-box-arrow-in-down"></i></span><div class="launch-title">Incoming Shipments</div><p class="launch-text">Receiving flow, inbound movement, and delivery intake.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-cart-check-fill"></i></span><div class="launch-title">Sales Orders</div><p class="launch-text">Order capture, approval, allocation, and fulfillment prep.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-box-seam"></i></span><div class="launch-title">Inventory Assets</div><p class="launch-text">Track stocked assets, availability, and operational usage.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-box-arrow-up-right"></i></span><div class="launch-title">Outgoing Shipments</div><p class="launch-text">Packing, dispatch, and outbound shipment control.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-arrow-counterclockwise"></i></span><div class="launch-title">Returns</div><p class="launch-text">Return intake, disposition, and exception handling.</p></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-title section-title section-card-title">Manage</div>
+            <p class="module-subtitle">Master data, collaboration content, facilities, finance, and reporting.</p>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="launch-grid">
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-upc-scan"></i></span><div class="launch-title">Catalog</div><p class="launch-text">Products, stores, and structure for commercial data.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-file-earmark-richtext-fill"></i></span><div class="launch-title">Wiki / Content</div><p class="launch-text">Knowledge pages, blogs, and survey content.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-gear-wide-connected"></i></span><div class="launch-title">Manufacturing Assets</div><p class="launch-text">Operational assets and production support structures.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-diagram-3-fill"></i></span><div class="launch-title">Parties</div><p class="launch-text">Organizations, people, relationships, and roles.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-building"></i></span><div class="launch-title">Facilities</div><p class="launch-text">Warehouses, stores, facility layout, and site data.</p></a>
+            <a href="#" class="launch-card"><span class="launch-icon"><i class="bi bi-cash-coin"></i></span><div class="launch-title">Accounting Reports</div><p class="launch-text">Financial reporting, ledger views, and metrics.</p></a>
+          </div>
+          <a href="#" class="report-link">Custom Reports · Report Builder</a>
+        </div>
+      </section>
+
+      <section class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-title section-title section-card-title">Work Queue</div>
+            <p class="module-subtitle">Recent operational focus areas and handoff reminders.</p>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-title">2 approved orders need shipment planning</div>
+              <p class="activity-meta">Sales Orders · Updated 12 minutes ago</p>
+            </div>
+            <div class="activity-item">
+              <div class="activity-title">1 active request still in progress</div>
+              <p class="activity-meta">Requests · Owner pending assignment</p>
+            </div>
+            <div class="activity-item">
+              <div class="activity-title">Catalog review recommended for store sync</div>
+              <p class="activity-meta">Catalog · Check stores and publish status</p>
+            </div>
+            <div class="activity-item">
+              <div class="activity-title">Accounting reports ready for period review</div>
+              <p class="activity-meta">Finance · Last generated today</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="footer-bar">
+    <span>Built on Moqui 3.1.0-rc2</span>
+    <span>Site Map</span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

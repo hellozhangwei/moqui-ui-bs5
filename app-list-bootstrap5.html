@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application List - Bootstrap 5 Redesign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="./marble-design-system.css" rel="stylesheet">
+  <style>
+    .app-picker-shell {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px 72px;
+      background:
+        radial-gradient(circle at top, rgba(37, 99, 235, .06), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #f5f7fb 100%);
+    }
+
+    .app-picker-card {
+      width: min(100%, 1040px);
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(229, 231, 235, .9);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, .06);
+      border-radius: 24px;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .app-picker-panel {
+      padding: 48px;
+    }
+
+    .app-picker-title {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -.03em;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .app-picker-subtitle {
+      max-width: 640px;
+      margin: 0 auto 32px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .app-tile {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fff;
+      color: var(--text-main);
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      min-height: 118px;
+    }
+
+    .app-tile:hover {
+      transform: translateY(-2px);
+      border-color: #bfdbfe;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, .10);
+      color: var(--text-main);
+    }
+
+    .app-tile.primary-tile {
+      background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+      border-color: #bfdbfe;
+    }
+
+    .app-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      color: var(--primary);
+      font-size: 18px;
+      flex: 0 0 44px;
+    }
+
+    .primary-tile .app-icon-wrap {
+      background: #dbeafe;
+      border-color: #bfdbfe;
+    }
+
+    .app-tile-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .app-tile-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    .app-tile-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .app-picker-footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 48px;
+      background: #fcfcfd;
+    }
+
+    .app-picker-links a {
+      text-decoration: none;
+    }
+
+    .page-footer-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: #3f3f46;
+      color: rgba(255,255,255,.9);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 10;
+    }
+
+    @media (max-width: 991.98px) {
+      .app-picker-panel {
+        padding: 32px 24px;
+      }
+
+      .app-picker-footer {
+        padding: 18px 24px;
+      }
+
+      .app-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .app-picker-title {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .app-picker-shell {
+        padding: 20px 12px 64px;
+      }
+
+      .app-picker-title {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar d-flex align-items-center px-3 px-lg-4">
+    <div class="d-flex align-items-center gap-3 flex-grow-1 overflow-hidden">
+      <button class="btn btn-sm p-0 border-0 text-white" type="button"><i class="bi bi-list fs-5"></i></button>
+      <div class="brand d-none d-md-block">Applications</div>
+      <nav aria-label="breadcrumb" class="overflow-hidden">
+        <ol class="breadcrumb text-nowrap overflow-hidden">
+          <li class="breadcrumb-item"><a href="#">Applications</a></li>
+          <li class="breadcrumb-item active" aria-current="page">App List</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="d-flex align-items-center gap-2 ms-3">
+      <span class="org-chip d-none d-md-inline-flex align-items-center gap-1"><i class="bi bi-geo-alt-fill"></i> ZIRET</span>
+      <a href="#" class="icon-btn"><i class="bi bi-bell"></i></a>
+      <a href="#" class="icon-btn"><i class="bi bi-clock-history"></i></a>
+      <a href="#" class="icon-btn"><i class="bi bi-person-circle"></i></a>
+    </div>
+  </nav>
+
+  <main class="app-picker-shell">
+    <section class="app-picker-card">
+      <div class="app-picker-panel">
+        <div class="d-flex justify-content-center mb-3">
+          <span class="meta-badge"><i class="bi bi-grid-3x3-gap-fill"></i> Workspace Launcher</span>
+        </div>
+        <h1 class="app-picker-title">Choose an Application</h1>
+        <p class="app-picker-subtitle">
+          Select a workspace to continue.
+        </p>
+
+        <div class="app-grid">
+          <a href="#" class="app-tile primary-tile">
+            <span class="app-icon-wrap"><i class="bi bi-gear-fill"></i></span>
+            <div>
+              <div class="app-tile-title">Marble ERP</div>
+              <p class="app-tile-text">Core ERP workspace.</p>
+              <span class="app-tile-meta">Recommended <i class="bi bi-arrow-right-short"></i></span>
+            </div>
+          </a>
+
+          <a href="#" class="app-tile">
+            <span class="app-icon-wrap"><i class="bi bi-check2-square"></i></span>
+            <div>
+              <div class="app-tile-title">HiveMind PM</div>
+              <p class="app-tile-text">Project management.</p>
+            </div>
+          </a>
+
+          <a href="#" class="app-tile">
+            <span class="app-icon-wrap"><i class="bi bi-sliders"></i></span>
+            <div>
+              <div class="app-tile-title">HiveMind Admin</div>
+              <p class="app-tile-text">Administration workspace.</p>
+            </div>
+          </a>
+
+          <a href="#" class="app-tile">
+            <span class="app-icon-wrap"><i class="bi bi-cart-fill"></i></span>
+            <div>
+              <div class="app-tile-title">POPC ERP</div>
+              <p class="app-tile-text">Commerce ERP workspace.</p>
+            </div>
+          </a>
+
+          <a href="#" class="app-tile">
+            <span class="app-icon-wrap"><i class="bi bi-box-seam"></i></span>
+            <div>
+              <div class="app-tile-title">HH Warehouse</div>
+              <p class="app-tile-text">Warehouse operations.</p>
+            </div>
+          </a>
+
+          <a href="#" class="app-tile">
+            <span class="app-icon-wrap"><i class="bi bi-person-fill"></i></span>
+            <div>
+              <div class="app-tile-title">My Account</div>
+              <p class="app-tile-text">Profile and preferences.</p>
+            </div>
+          </a>
+
+          <a href="#" class="app-tile">
+            <span class="app-icon-wrap"><i class="bi bi-lightning-charge-fill"></i></span>
+            <div>
+              <div class="app-tile-title">Example</div>
+              <p class="app-tile-text">Demo workspace.</p>
+            </div>
+          </a>
+
+          <a href="#" class="app-tile">
+            <span class="app-icon-wrap"><i class="bi bi-hdd-network-fill"></i></span>
+            <div>
+              <div class="app-tile-title">System</div>
+              <p class="app-tile-text">System tools.</p>
+            </div>
+          </a>
+
+          <a href="#" class="app-tile">
+            <span class="app-icon-wrap"><i class="bi bi-wrench-adjustable-circle-fill"></i></span>
+            <div>
+              <div class="app-tile-title">Tools</div>
+              <p class="app-tile-text">Utilities and diagnostics.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="app-picker-footer d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+        <div>
+          <div class="fw-semibold mb-1">Current Experience</div>
+          <div class="small-muted">Using dynamic Material UI.</div>
+        </div>
+        <div class="app-picker-links d-flex flex-wrap gap-3">
+          <a href="#">Switch to the standard UI</a>
+          <a href="#">Switch to the dynamic Bootstrap UI</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="page-footer-bar">
+    <span>Built on Moqui 3.1.0-rc2</span>
+    <span>Site Map</span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
