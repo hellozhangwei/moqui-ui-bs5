@@ -6,7 +6,7 @@
   --border: #e5e7eb;
   --text-main: #111827;
   --text-muted: #6b7280;
-  --nav-bg: #111827;
+  --nav-bg: #334155;
   --primary: #2563eb;
   --primary-soft: #eff6ff;
   --success: #16a34a;
@@ -379,25 +379,49 @@ textarea.form-control {
 }
 
 .tab-nav {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 8px;
+  background: transparent;
+  border-bottom: 0;
+  border-radius: 0;
+  padding: 0 16px;
   display: inline-flex;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .tab-nav .nav-link {
-  border-radius: var(--radius-sm);
-  color: #374151;
+  position: relative;
+  border-radius: 10px 10px 0 0;
+  color: #64748b;
   font-weight: 600;
-  padding: 10px 14px;
+  padding: 10px 16px 12px;
+  margin-bottom: -1px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  background: transparent;
+}
+
+.tab-nav .nav-link:hover {
+  color: #334155;
+  background: #f8fafc;
 }
 
 .tab-nav .nav-link.active {
-  background: var(--primary-soft);
-  color: var(--primary);
+  background: #fff;
+  color: #334155;
+  border-color: var(--border);
+  border-bottom-color: #fff;
+}
+
+.tab-panel-shell {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  margin-top: 0;
+  position: relative;
+  z-index: 0;
 }
 
 .table-wrap {
