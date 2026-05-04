@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order #100056 — Marble ERP</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ── TOKENS: DARK ── */
+:root {
+  --bg:         #0e0f11;
+  --bg-2:       #141518;
+  --bg-3:       #1a1c20;
+  --bg-4:       #212328;
+  --border:     rgba(255,255,255,.07);
+  --border-md:  rgba(255,255,255,.12);
+  --amber:      #f5a623;
+  --amber-dim:  rgba(245,166,35,.12);
+  --amber-glow: rgba(245,166,35,.06);
+  --text-1:     #f0f0ee;
+  --text-2:     #8a8d96;
+  --text-3:     #555860;
+  --green:      #34d399;
+  --blue:       #60a5fa;
+  --purple:     #a78bfa;
+  --red:        #f87171;
+  --orange:     #fb923c;
+  --grid-line:  rgba(255,255,255,.018);
+  --radius:     6px;
+  --font-mono:  'DM Mono', monospace;
+  --font-head:  'Syne', sans-serif;
+  --sidebar-w:  216px;
+  --topbar-h:   48px;
+}
+
+[data-theme="light"] {
+  --bg:         #f0f1f3;
+  --bg-2:       #ffffff;
+  --bg-3:       #f5f6f8;
+  --bg-4:       #eaecef;
+  --border:     rgba(0,0,0,.08);
+  --border-md:  rgba(0,0,0,.13);
+  --amber:      #d4890a;
+  --amber-dim:  rgba(212,137,10,.1);
+  --amber-glow: rgba(212,137,10,.05);
+  --text-1:     #111318;
+  --text-2:     #5c6070;
+  --text-3:     #9ea3b0;
+  --green:      #16a34a;
+  --blue:       #2563eb;
+  --purple:     #7c3aed;
+  --red:        #dc2626;
+  --orange:     #ea580c;
+  --grid-line:  rgba(0,0,0,.04);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+  transition: background-color .25s ease, border-color .25s ease, color .2s ease;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  background: var(--bg);
+  color: var(--text-1);
+  display: flex; flex-direction: column;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+  transition: none;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: relative; z-index: 100;
+  height: var(--topbar-h);
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 16px; gap: 12px; flex-shrink: 0;
+}
+.logo {
+  font-family: var(--font-head); font-weight: 800; font-size: 15px;
+  letter-spacing: -.5px; color: var(--text-1); text-decoration: none;
+  display: flex; align-items: center; gap: 7px;
+}
+.logo-mark {
+  width: 22px; height: 22px; background: var(--amber); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #000; font-family: var(--font-mono);
+}
+.top-divider { width: 1px; height: 20px; background: var(--border-md); flex-shrink: 0; }
+.breadcrumb-nav {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11.5px; color: var(--text-2); font-family: var(--font-mono); flex: 1;
+}
+.breadcrumb-nav a { color: var(--text-3); text-decoration: none; transition: color .15s; }
+.breadcrumb-nav a:hover { color: var(--amber); }
+.breadcrumb-nav .cur { color: var(--text-1); }
+.breadcrumb-nav .sep { color: var(--text-3); font-size: 10px; }
+.top-end { display: flex; align-items: center; gap: 8px; }
+.org-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg-3); border: 1px solid var(--border-md);
+  border-radius: var(--radius); padding: 4px 10px;
+  font-size: 11.5px; font-weight: 500; color: var(--text-1); cursor: pointer;
+}
+.org-chip:hover { border-color: var(--amber); }
+.org-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.icon-btn {
+  width: 28px; height: 28px; border: 1px solid var(--border);
+  background: transparent; border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-2); font-size: 13px; cursor: pointer;
+}
+.icon-btn:hover { border-color: var(--border-md); color: var(--text-1); background: var(--bg-3); }
+.avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--amber) 0%, #e07b0a 100%);
+  color: #000; font-size: 10.5px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); cursor: pointer;
+}
+
+/* ── LAYOUT ── */
+.layout { display: flex; flex: 1; overflow: hidden; position: relative; z-index: 1; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w); background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow-y: auto; overflow-x: hidden; flex-shrink: 0;
+  padding: 8px 0;
+  transition: width .22s cubic-bezier(.4,0,.2,1);
+}
+.sidebar.collapsed { width: 48px; }
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--bg-4); }
+.sidebar-toggle {
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 6px 10px 2px; flex-shrink: 0;
+}
+.sidebar.collapsed .sidebar-toggle { justify-content: center; padding: 6px 0 2px; }
+.sidebar-toggle-btn {
+  width: 24px; height: 24px; border: 1px solid var(--border);
+  background: transparent; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-3); cursor: pointer; font-size: 12px;
+}
+.sidebar-toggle-btn:hover { border-color: var(--border-md); color: var(--text-1); }
+.nav-group { padding: 8px 12px 4px; }
+.sidebar.collapsed .nav-group { padding: 6px 6px 4px; }
+.nav-label {
+  font-size: 9.5px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-3); padding: 0 6px;
+  margin-bottom: 4px; font-family: var(--font-head); white-space: nowrap;
+  max-height: 30px; overflow: hidden;
+}
+.sidebar.collapsed .nav-label { opacity: 0; max-height: 0; margin: 0; padding: 0; }
+.nav-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; border-radius: var(--radius);
+  font-size: 12px; color: var(--text-2); text-decoration: none;
+  cursor: pointer; user-select: none; font-family: var(--font-mono);
+  white-space: nowrap; overflow: hidden;
+}
+.nav-link i { font-size: 13px; width: 15px; text-align: center; flex-shrink: 0; }
+.nav-link:hover { background: var(--bg-3); color: var(--text-1); }
+.nav-link.active { color: rgba(245,166,35,.65); }
+.sidebar.collapsed .nav-link { justify-content: center; padding: 8px 0; gap: 0; position: relative; }
+.sidebar.collapsed .nav-link .nav-text { opacity: 0; width: 0; overflow: hidden; }
+.sidebar.collapsed .nav-link[data-label]::after {
+  content: attr(data-label);
+  position: absolute; left: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+  background: var(--bg-4); color: var(--text-1); font-size: 11.5px;
+  font-family: var(--font-mono); padding: 4px 10px; border-radius: 4px;
+  border: 1px solid var(--border-md); white-space: nowrap; pointer-events: none;
+  opacity: 0; z-index: 300;
+}
+.sidebar.collapsed .nav-link[data-label]:hover::after { opacity: 1; }
+.nav-sub { padding-left: 16px; max-height: 300px; overflow: hidden; }
+.nav-sub .nav-link { font-size: 11.5px; padding: 5px 10px; }
+.sidebar.collapsed .nav-sub { max-height: 0; opacity: 0; pointer-events: none; }
+.nav-sep { border: none; border-top: 1px solid var(--border); margin: 6px 12px; }
+.sidebar.collapsed .nav-sep { margin: 6px 8px; }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: var(--bg-2); border-bottom: 1px solid var(--border);
+  padding: 0 28px; flex-shrink: 0;
+}
+.page-title-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0 0; gap: 12px;
+}
+.order-num {
+  font-family: var(--font-head); font-size: 20px; font-weight: 700;
+  letter-spacing: -.5px; color: var(--text-1);
+}
+.order-badge-web {
+  font-size: 11px; font-family: var(--font-mono);
+  color: var(--blue); background: rgba(96,165,250,.1);
+  border: 1px solid rgba(96,165,250,.2);
+  border-radius: 4px; padding: 2px 9px;
+}
+.page-tabs { display: flex; gap: 0; margin-top: 12px; }
+.page-tab {
+  padding: 9px 16px; font-size: 11.5px; font-family: var(--font-mono);
+  color: var(--text-3); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: .15s; user-select: none;
+}
+.page-tab:hover { color: var(--text-1); }
+.page-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+/* ── ACTION BAR ── */
+.action-bar {
+  background: var(--bg-2); border-bottom: 1px solid var(--border);
+  padding: 8px 28px; display: flex; align-items: center; gap: 6px;
+  flex-shrink: 0; flex-wrap: wrap;
+}
+.act-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: var(--radius);
+  font-size: 11.5px; font-family: var(--font-mono);
+  cursor: pointer; border: 1px solid var(--border-md);
+  background: transparent; color: var(--text-2);
+  transition: .15s; white-space: nowrap;
+}
+.act-btn:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+.act-btn i { font-size: 11px; }
+.act-btn.danger { color: var(--red); border-color: rgba(248,113,113,.25); }
+.act-btn.danger:hover { background: rgba(248,113,113,.07); border-color: var(--red); }
+.act-btn.warn { color: var(--orange); border-color: rgba(251,146,60,.25); }
+.act-btn.warn:hover { background: rgba(251,146,60,.07); border-color: var(--orange); }
+.act-sep { width: 1px; height: 18px; background: var(--border-md); margin: 0 2px; }
+
+/* ── SCROLLABLE BODY ── */
+.body-scroll {
+  flex: 1; overflow-y: auto; padding: 20px 28px 32px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.body-scroll::-webkit-scrollbar { width: 5px; }
+.body-scroll::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+
+/* ── CARD ── */
+.card {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 8px; overflow: visible;
+  animation: fadeUp .3s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card:nth-child(1) { animation-delay: .04s; }
+.card:nth-child(2) { animation-delay: .08s; }
+.card:nth-child(3) { animation-delay: .12s; }
+.card:nth-child(4) { animation-delay: .16s; }
+.card:nth-child(5) { animation-delay: .20s; }
+.card:nth-child(6) { animation-delay: .24s; }
+
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; border-bottom: 1px solid var(--border);
+  background: var(--bg-3);
+  border-radius: 8px 8px 0 0;
+}
+.card-title {
+  font-family: var(--font-head); font-size: 11px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text-2);
+}
+.card-actions { display: flex; gap: 6px; align-items: center; }
+
+.card-body { padding: 16px; }
+
+/* ── FIELD GRID ── */
+.field-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--border);
+}
+.field-cell {
+  background: var(--bg-2); padding: 10px 14px;
+}
+.field-cell.span2 { grid-column: span 2; }
+.field-label {
+  font-size: 10px; color: var(--text-3); letter-spacing: .06em;
+  text-transform: uppercase; margin-bottom: 4px; font-family: var(--font-head);
+}
+.field-value {
+  font-size: 12.5px; color: var(--text-1); font-family: var(--font-mono);
+}
+.field-value.link { color: var(--amber); cursor: pointer; text-decoration: none; }
+.field-value.link:hover { color: #ffc84d; }
+.field-value.muted { color: var(--text-2); }
+.field-value.big {
+  font-family: var(--font-head); font-size: 16px; font-weight: 700;
+  color: var(--text-1);
+}
+
+/* ── STATUS HISTORY ── */
+.history-row {
+  display: flex; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.history-row:last-child { border-bottom: none; }
+.history-time { font-size: 11px; color: var(--text-3); min-width: 160px; }
+.history-actor { font-size: 12px; color: var(--text-2); flex: 1; }
+.history-status { font-size: 11.5px; font-weight: 500; }
+.status-approved { color: var(--green); }
+.status-placed   { color: var(--blue); }
+.status-open     { color: var(--text-2); }
+
+/* ── STATUS BADGE ── */
+.status-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; padding: 2px 8px; border-radius: 3px;
+  border: 1px solid; font-family: var(--font-mono);
+}
+.sb-approved { background: rgba(52,211,153,.08); color: var(--green); border-color: rgba(52,211,153,.25); }
+.sb-declined { background: rgba(248,113,113,.08); color: var(--red);   border-color: rgba(248,113,113,.25); }
+.sb-warn     { background: rgba(251,146,60,.08);  color: var(--orange); border-color: rgba(251,146,60,.25); }
+.sb-info     { background: rgba(96,165,250,.08);  color: var(--blue);   border-color: rgba(96,165,250,.25); }
+
+/* ── MINI TABLE (email messages) ── */
+.mini-table { width: 100%; border-collapse: collapse; }
+.mini-table th {
+  font-size: 10px; font-family: var(--font-head); font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-3); padding: 7px 10px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.mini-table td {
+  font-size: 12px; padding: 9px 10px; color: var(--text-2);
+  border-bottom: 1px solid var(--border); font-family: var(--font-mono);
+}
+.mini-table tr:last-child td { border-bottom: none; }
+.mini-table .link { color: var(--amber); cursor: pointer; text-decoration: none; }
+.mini-table .link:hover { color: #ffc84d; }
+
+/* ── TWO-COL LAYOUT ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* ── PART SECTION ── */
+.part-header {
+  background: var(--bg-3); border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-radius: 8px 8px 0 0;
+}
+.part-title {
+  font-family: var(--font-head); font-size: 13px; font-weight: 700;
+  color: var(--text-1);
+}
+
+/* ── META KV ── */
+.kv-list { display: flex; flex-direction: column; gap: 5px; }
+.kv-row { display: flex; gap: 8px; align-items: baseline; }
+.kv-key {
+  font-size: 11px; color: var(--text-3); min-width: 130px;
+  font-family: var(--font-mono);
+}
+.kv-val { font-size: 12px; color: var(--text-2); font-family: var(--font-mono); }
+.kv-val.link { color: var(--amber); cursor: pointer; text-decoration: none; }
+.kv-val.link:hover { color: #ffc84d; }
+.kv-val strong { color: var(--text-1); }
+
+/* ── PAYMENT CARD ── */
+.payment-alert {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(251,146,60,.08); border: 1px solid rgba(251,146,60,.2);
+  border-radius: var(--radius); padding: 8px 12px;
+  font-size: 11.5px; color: var(--orange); margin-bottom: 12px;
+}
+.payment-entry {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; margin-bottom: 10px;
+}
+.payment-entry:last-child { margin-bottom: 0; }
+.payment-entry-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px; background: var(--bg-3); border-bottom: 1px solid var(--border);
+}
+.payment-entry-body { padding: 10px 12px; }
+.payment-detail { font-size: 11.5px; color: var(--text-2); line-height: 1.8; }
+.payment-detail strong { color: var(--text-1); font-weight: 500; }
+
+/* ── ADDRESS BLOCK ── */
+.address-block {
+  font-size: 12px; color: var(--text-2); line-height: 1.9;
+  font-family: var(--font-mono);
+}
+.address-block strong { color: var(--text-1); font-weight: 500; }
+
+/* ── ITEMS LIST v2 ── */
+.items-wrap { border-top: 1px solid var(--border); }
+
+.items-scroll { overflow-x: auto; border-radius: 0 0 8px 8px; }
+
+.items-thead {
+  display: grid;
+  grid-template-columns: 56px minmax(160px,1.2fr) minmax(140px,1fr) minmax(130px,.9fr) minmax(200px,1.6fr) minmax(110px,.8fr) minmax(100px,.7fr);
+  min-width: 900px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+}
+.ith {
+  padding: 8px 12px;
+  font-size: 9.5px; font-family: var(--font-head); font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text-3);
+  line-height: 1.5;
+}
+.ith.right { text-align: right; }
+
+.item-card {
+  display: grid;
+  grid-template-columns: 56px minmax(160px,1.2fr) minmax(140px,1fr) minmax(130px,.9fr) minmax(200px,1.6fr) minmax(110px,.8fr) minmax(100px,.7fr);
+  min-width: 900px;
+  border-bottom: 1px solid var(--border);
+  transition: background .12s;
+  position: relative;
+}
+.item-card:last-child { border-bottom: none; }
+.item-card:hover { background: rgba(255,255,255,.015); }
+[data-theme="light"] .item-card:hover { background: rgba(0,0,0,.02); }
+
+/* left accent bar on hover */
+.item-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--amber);
+  opacity: 0; transition: opacity .15s;
+}
+.item-card:hover::before { opacity: 1; }
+
+.itd {
+  padding: 14px 12px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-2);
+  display: flex; flex-direction: column; justify-content: flex-start; gap: 3px;
+}
+.itd.right { align-items: flex-end; }
+.itd.center { align-items: center; }
+
+/* col 0: index */
+.itd-idx {
+  padding-left: 16px;
+  justify-content: flex-start;
+  padding-top: 18px;
+}
+.idx-num {
+  font-family: var(--font-head); font-size: 22px; font-weight: 800;
+  color: var(--border-md); line-height: 1; letter-spacing: -1px;
+}
+[data-theme="light"] .idx-num { color: #d0d3da; }
+.idx-part { font-size: 10px; color: var(--text-3); margin-top: 3px; }
+
+/* col 1: product */
+.prod-type {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; padding: 2px 7px; border-radius: 3px;
+  background: rgba(96,165,250,.08); color: var(--blue);
+  border: 1px solid rgba(96,165,250,.2); width: fit-content;
+  font-family: var(--font-mono);
+}
+.prod-id {
+  font-size: 12.5px; font-weight: 500; color: var(--amber);
+  text-decoration: none; letter-spacing: .02em;
+}
+.prod-id:hover { color: #ffc84d; }
+.prod-name-sm { font-size: 11px; color: var(--text-3); }
+
+/* col 2: description */
+.desc-main { font-size: 13px; color: var(--text-1); font-family: var(--font-mono); }
+
+/* col 3: pricing */
+.price-original {
+  font-size: 11px; color: var(--text-3);
+  text-decoration: line-through;
+}
+.price-unit {
+  font-size: 16px; font-weight: 700; color: var(--text-1);
+  font-family: var(--font-head); letter-spacing: -.5px; line-height: 1;
+}
+.price-no-orig { padding-top: 16px; } /* when no original price */
+.price-hist {
+  font-size: 10.5px; color: var(--blue); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 3px;
+  transition: color .12s;
+}
+.price-hist:hover { color: #93c5fd; }
+.qty-row {
+  display: flex; align-items: baseline; gap: 5px; margin-top: 2px;
+}
+.qty-num {
+  font-size: 14px; font-weight: 700; color: var(--text-1);
+  font-family: var(--font-head); letter-spacing: -.3px;
+}
+.qty-unit { font-size: 10px; color: var(--text-3); }
+
+/* col 4: fulfillment */
+.fulfill-ratio {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 5px;
+}
+.fulfill-label { font-size: 10px; color: var(--text-3); min-width: 52px; }
+.fulfill-fraction { font-size: 12.5px; color: var(--text-1); font-weight: 500; }
+.progress-track {
+  height: 3px; background: var(--border-md); border-radius: 2px;
+  width: 100%; overflow: hidden; margin-bottom: 8px;
+}
+.progress-fill {
+  height: 100%; border-radius: 2px; background: var(--orange);
+  transition: width .4s ease;
+}
+.asset-pill {
+  display: inline-flex; align-items: flex-start; gap: 5px;
+  font-size: 10.5px; color: var(--orange);
+  background: rgba(251,146,60,.07); border: 1px solid rgba(251,146,60,.18);
+  border-radius: 4px; padding: 5px 8px; width: 100%;
+  line-height: 1.5;
+}
+.asset-pill i { font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+.asset-actions {
+  display: flex; gap: 5px; margin-top: 7px;
+  opacity: 0; transition: opacity .15s;
+}
+.item-card:hover .asset-actions { opacity: 1; }
+
+/* col 5: totals */
+.total-main {
+  font-size: 16px; font-weight: 700; color: var(--text-1);
+  font-family: var(--font-head); letter-spacing: -.5px; line-height: 1;
+}
+.total-children { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+/* col 6: billing */
+.bill-grid { display: flex; flex-direction: column; gap: 4px; }
+.bill-row {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 8px;
+}
+.bill-key { font-size: 10px; color: var(--text-3); }
+.bill-val {
+  font-size: 11.5px; font-weight: 500;
+  font-family: var(--font-head);
+}
+.bill-val.zero { color: var(--text-3); }
+.bill-val.pos  { color: var(--green); }
+
+/* summary footer */
+.items-summary {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--bg-3); border-top: 1px solid var(--border);
+  border-radius: 0 0 8px 8px;
+}
+.summary-left {
+  display: flex; align-items: center; gap: 16px;
+}
+.summary-pill {
+  font-size: 10.5px; color: var(--text-3); font-family: var(--font-mono);
+  background: var(--bg-4); border: 1px solid var(--border);
+  border-radius: 4px; padding: 3px 9px;
+}
+.summary-right {
+  display: flex; align-items: baseline; gap: 8px;
+}
+.summary-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; }
+.summary-amount {
+  font-family: var(--font-head); font-size: 20px; font-weight: 800;
+  color: var(--text-1); letter-spacing: -.7px;
+}
+
+/* ── PROMO TABLE ── */
+.promo-table { width: 100%; border-collapse: collapse; }
+.promo-table th {
+  font-size: 10px; color: var(--text-3); font-family: var(--font-head);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 12px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.promo-table td {
+  padding: 9px 12px; font-size: 12px; color: var(--text-2);
+  font-family: var(--font-mono);
+}
+
+/* ── SMALL BTNS ── */
+.btn-xs {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 4px;
+  font-size: 11px; font-family: var(--font-mono);
+  cursor: pointer; border: 1px solid var(--border-md);
+  background: transparent; color: var(--text-2);
+  transition: .12s; white-space: nowrap;
+}
+.btn-xs:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+.btn-xs.primary { background: var(--amber); border-color: var(--amber); color: #000; }
+.btn-xs.primary:hover { background: #ffb83d; }
+.btn-xs.danger { color: var(--red); border-color: rgba(248,113,113,.25); }
+.btn-xs.danger:hover { background: rgba(248,113,113,.08); border-color: var(--red); }
+.btn-xs i { font-size: 10px; }
+
+/* ── SECTION DIVIDER ── */
+.section-label {
+  font-family: var(--font-head); font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  position: relative; z-index: 10;
+  height: 28px; background: var(--bg-2); border-top: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 28px; gap: 16px; flex-shrink: 0;
+}
+.status-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10.5px; color: var(--text-3); font-family: var(--font-mono);
+}
+.status-dot-green { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+
+/* ── SHIPMENT TAG ── */
+.shipment-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--purple);
+  background: rgba(167,139,250,.08); border: 1px solid rgba(167,139,250,.2);
+  border-radius: 4px; padding: 2px 9px;
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="#" class="logo">
+    <div class="logo-mark">M</div>
+    Marble ERP
+  </a>
+  <div class="top-divider"></div>
+  <nav class="breadcrumb-nav">
+    <a href="#">Applications</a>
+    <span class="sep"><i class="bi bi-chevron-right"></i></span>
+    <a href="#">Marble ERP</a>
+    <span class="sep"><i class="bi bi-chevron-right"></i></span>
+    <a href="#">Orders</a>
+    <span class="sep"><i class="bi bi-chevron-right"></i></span>
+    <span class="cur">Order Detail</span>
+  </nav>
+  <div class="top-end">
+    <div class="org-chip">
+      <span class="org-dot"></span>
+      ZIRET
+      <i class="bi bi-chevron-down" style="font-size:9px;opacity:.5"></i>
+    </div>
+    <button class="icon-btn" id="themeToggle" title="Toggle theme"><i class="bi bi-sun" id="themeIcon"></i></button>
+    <button class="icon-btn"><i class="bi bi-bell"></i></button>
+    <button class="icon-btn"><i class="bi bi-clock-history"></i></button>
+    <button class="icon-btn"><i class="bi bi-question-circle"></i></button>
+    <div class="avatar">JD</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-toggle">
+      <button class="sidebar-toggle-btn" id="sidebarToggle">
+        <i class="bi bi-layout-sidebar-reverse" id="toggleIcon"></i>
+      </button>
+    </div>
+    <div class="nav-group">
+      <div class="nav-label">System</div>
+      <a href="#" class="nav-link" data-label="Dashboard"><i class="bi bi-grid-1x2"></i><span class="nav-text"> Dashboard</span></a>
+      <a href="#" class="nav-link" data-label="Quick Search"><i class="bi bi-search"></i><span class="nav-text"> Quick Search</span></a>
+      <a href="#" class="nav-link" data-label="Accounting"><i class="bi bi-receipt-cutoff"></i><span class="nav-text"> Accounting</span></a>
+      <a href="#" class="nav-link" data-label="Asset"><i class="bi bi-box-seam"></i><span class="nav-text"> Asset</span></a>
+    </div>
+    <hr class="nav-sep">
+    <div class="nav-group">
+      <div class="nav-label">Catalog</div>
+      <a href="#" class="nav-link" data-label="Dashboard"><i class="bi bi-speedometer2"></i><span class="nav-text"> Dashboard</span></a>
+      <a href="#" class="nav-link" data-label="Products"><i class="bi bi-archive"></i><span class="nav-text"> Products</span></a>
+      <a href="#" class="nav-link" data-label="Categories"><i class="bi bi-tags"></i><span class="nav-text"> Categories</span></a>
+      <a href="#" class="nav-link" data-label="Features"><i class="bi bi-toggles"></i><span class="nav-text"> Features</span></a>
+    </div>
+    <hr class="nav-sep">
+    <div class="nav-group">
+      <div class="nav-label">Operations</div>
+      <a href="#" class="nav-link" data-label="Customers"><i class="bi bi-people"></i><span class="nav-text"> Customers</span></a>
+      <a href="#" class="nav-link" data-label="Facility"><i class="bi bi-building"></i><span class="nav-text"> Facility</span></a>
+      <a href="#" class="nav-link" data-label="Manufacturing"><i class="bi bi-gear-wide-connected"></i><span class="nav-text"> Manufacturing</span></a>
+      <a href="#" class="nav-link active" data-label="Orders"><i class="bi bi-bag-check"></i><span class="nav-text"> Orders</span></a>
+      <div class="nav-sub">
+        <a href="#" class="nav-link active" data-label="Order Detail"><i class="bi bi-dot"></i><span class="nav-text"> Order Detail</span></a>
+      </div>
+      <a href="#" class="nav-link" data-label="Parties"><i class="bi bi-diagram-3"></i><span class="nav-text"> Parties</span></a>
+      <a href="#" class="nav-link" data-label="Projects"><i class="bi bi-kanban"></i><span class="nav-text"> Projects</span></a>
+      <a href="#" class="nav-link" data-label="Requests"><i class="bi bi-inbox"></i><span class="nav-text"> Requests</span></a>
+      <a href="#" class="nav-link" data-label="Returns"><i class="bi bi-arrow-return-left"></i><span class="nav-text"> Returns</span></a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-title-row">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="order-num">Order #100056</div>
+          <span class="order-badge-web"><i class="bi bi-globe2"></i> Web Order (ecommerce)</span>
+          <span class="status-badge sb-approved"><i class="bi bi-check-circle"></i> Approved</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-3);font-family:var(--font-mono);">Grand Total <span style="color:var(--text-1);font-size:14px;font-weight:600;margin-left:6px;">$11,289.89</span></div>
+      </div>
+      <div class="page-tabs">
+        <div class="page-tab active">Order Detail</div>
+        <div class="page-tab">Items</div>
+        <div class="page-tab">Quick Items</div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <button class="act-btn danger"><i class="bi bi-x-circle"></i> Un-approve</button>
+      <button class="act-btn warn"><i class="bi bi-pause-circle"></i> Hold</button>
+      <button class="act-btn warn"><i class="bi bi-x-lg"></i> Close Order</button>
+      <div class="act-sep"></div>
+      <button class="act-btn"><i class="bi bi-file-earmark-pdf"></i> Order PDF</button>
+      <button class="act-btn"><i class="bi bi-copy"></i> Clone</button>
+      <button class="act-btn"><i class="bi bi-arrow-repeat"></i> Recurring</button>
+      <button class="act-btn"><i class="bi bi-clock-history"></i> Audit Log</button>
+    </div>
+
+    <!-- BODY -->
+    <div class="body-scroll">
+
+      <!-- ROW 1: Order Info + Right panels -->
+      <div class="two-col" style="align-items:start;">
+
+        <!-- LEFT: Order Fields -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Order Information</div>
+            </div>
+            <div class="field-grid">
+              <div class="field-cell">
+                <div class="field-label">Parent Order</div>
+                <a href="#" class="field-value link">100054</a>
+              </div>
+              <div class="field-cell">
+                <div class="field-label">Status</div>
+                <div class="field-value">Approved</div>
+              </div>
+              <div class="field-cell">
+                <div class="field-label">Revision</div>
+                <div class="field-value">6</div>
+              </div>
+              <div class="field-cell">
+                <div class="field-label">Source</div>
+                <div class="field-value">Web</div>
+              </div>
+              <div class="field-cell span2">
+                <div class="field-label">Entry</div>
+                <div class="field-value muted">2026-04-23 08:46</div>
+              </div>
+              <div class="field-cell span2">
+                <div class="field-label">Placed</div>
+                <div class="field-value muted">2026-04-23 08:48</div>
+              </div>
+              <div class="field-cell span2">
+                <div class="field-label">Name</div>
+                <div class="field-value muted">—</div>
+              </div>
+              <div class="field-cell span2">
+                <div class="field-label">Message Remote</div>
+                <div class="field-value muted">—</div>
+              </div>
+              <div class="field-cell span2">
+                <div class="field-label">Display ID</div>
+                <div class="field-value muted">—</div>
+              </div>
+              <div class="field-cell span2">
+                <div class="field-label">External ID</div>
+                <div class="field-value muted">—</div>
+              </div>
+              <div class="field-cell span2" style="background:var(--bg-3);">
+                <div class="field-label">Grand Total</div>
+                <div class="field-value big">$11,289.89</div>
+              </div>
+              <div class="field-cell span2">
+                <div class="field-label">Promo Codes</div>
+                <div class="field-value muted">None applied</div>
+              </div>
+            </div>
+            <!-- Promo section -->
+            <div style="padding:12px 16px 10px;border-top:1px solid var(--border);">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <div class="section-label" style="margin:0;font-size:10px;">Promo Codes</div>
+                <button class="btn-xs"><i class="bi bi-plus-lg"></i> Add Promo Code</button>
+              </div>
+              <table class="promo-table">
+                <thead><tr>
+                  <th>Promo Code</th><th>Promotion</th><th>Code Expires</th><th>Promo Expires</th>
+                </tr></thead>
+                <tbody>
+                  <tr><td colspan="4" style="color:var(--text-3);font-size:11px;text-align:center;padding:14px;">No promo codes applied</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Status History + Notes + Attachments + Email -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Status History -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Status History</div>
+            </div>
+            <div class="card-body" style="padding:0;">
+              <div style="padding:0 16px;">
+                <div class="history-row">
+                  <div class="history-time">2026-04-23 08:48</div>
+                  <div class="history-actor">by John Doe [john.doe]</div>
+                  <div class="history-status status-approved">Approved</div>
+                </div>
+                <div class="history-row">
+                  <div class="history-time">2026-04-23 08:48</div>
+                  <div class="history-actor">by John Doe [john.doe]</div>
+                  <div class="history-status status-placed">Placed by Customer</div>
+                </div>
+                <div class="history-row">
+                  <div class="history-time">2026-04-23 08:46</div>
+                  <div class="history-actor">by John Doe [john.doe]</div>
+                  <div class="history-status status-open">Open (Tentative)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Notes -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Order Notes</div>
+              <button class="btn-xs"><i class="bi bi-plus-lg"></i> Add Note</button>
+            </div>
+            <div class="card-body" style="min-height:48px;">
+              <div style="color:var(--text-3);font-size:11.5px;text-align:center;padding:8px 0;">No notes</div>
+            </div>
+          </div>
+
+          <!-- Attachments -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Attachments</div>
+              <button class="btn-xs"><i class="bi bi-paperclip"></i> Add Attachment</button>
+            </div>
+            <div class="card-body" style="min-height:48px;">
+              <div style="color:var(--text-3);font-size:11.5px;text-align:center;padding:8px 0;">No attachments</div>
+            </div>
+          </div>
+
+          <!-- Email Messages -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Email Messages</div>
+              <button class="btn-xs"><i class="bi bi-send"></i> Send Email</button>
+            </div>
+            <div class="card-body" style="padding:0;">
+              <table class="mini-table">
+                <thead><tr>
+                  <th>ID</th><th>Rev</th><th>Sent Date</th><th>To</th><th>Status</th><th>Type</th><th></th>
+                </tr></thead>
+                <tbody>
+                  <tr>
+                    <td><a href="#" class="link">100054</a></td>
+                    <td>5</td>
+                    <td style="color:var(--text-3);">—</td>
+                    <td>joe@public.com</td>
+                    <td><span class="status-badge sb-info">Ready</span></td>
+                    <td>Order Placed</td>
+                    <td><button class="btn-xs primary">Send</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SALES ORDER PART -->
+      <div class="card">
+        <div class="part-header">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="part-title">Sales Order Part 01</div>
+            <span class="shipment-tag"><i class="bi bi-truck"></i> Shipment 100056</span>
+            <span class="status-badge sb-approved">Approved</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn-xs"><i class="bi bi-pencil"></i> Edit Part 01</button>
+            <button class="btn-xs"><i class="bi bi-person-plus"></i> Add Party</button>
+            <button class="btn-xs"><i class="bi bi-file-earmark-text"></i> Create Invoice</button>
+            <button class="btn-xs"><i class="bi bi-arrow-return-left"></i> Create Return</button>
+            <button class="btn-xs danger"><i class="bi bi-x-lg"></i> Close Part</button>
+          </div>
+        </div>
+
+        <!-- Part body: 3-col layout -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-top:1px solid var(--border);">
+
+          <!-- Col 1: Part Meta -->
+          <div style="padding:16px;border-right:1px solid var(--border);">
+            <div class="section-label">Part Details</div>
+            <div class="kv-list">
+              <div class="kv-row"><span class="kv-key">Part Total</span><span class="kv-val"><strong style="color:var(--text-1);font-size:13px;">$11,289.89</strong></span></div>
+              <div class="kv-row"><span class="kv-key">Part Status</span>
+                <span class="kv-val" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                  <span class="status-badge sb-approved">Approved</span>
+                  <a href="#" class="kv-val link" style="font-size:11px;">Hold Part</a>
+                  <span style="color:var(--text-3);">·</span>
+                  <a href="#" class="kv-val link" style="font-size:11px;">Complete Part</a>
+                </span>
+              </div>
+              <div class="kv-row"><span class="kv-key">Customer</span><a href="#" class="kv-val link">CustJqp: Joe Public</a></div>
+              <div class="kv-row"><span class="kv-key">Customer Email</span><span class="kv-val">joe@public.com</span></div>
+              <div class="kv-row"><span class="kv-key">Store</span><span class="kv-val" style="font-size:11px;">POPC_DEFAULT: Ziziwork Retail Store</span></div>
+              <div class="kv-row"><span class="kv-key">Vendor</span><a href="#" class="kv-val link" style="font-size:11px;">ZIRET: Ziziwork Retail &amp; Wholesale</a></div>
+              <div class="kv-row"><span class="kv-key">Ship Method</span><span class="kv-val">Ground Parcel</span></div>
+              <div class="kv-row"><span class="kv-key">Priority</span><span class="kv-val">5</span></div>
+              <div class="kv-row"><span class="kv-key">Their Order ID</span><span class="kv-val" style="color:var(--text-3);">—</span></div>
+              <div class="kv-row"><span class="kv-key">Ship Instructions</span><span class="kv-val" style="color:var(--text-3);">N</span></div>
+              <div class="kv-row"><span class="kv-key">Is Gift</span><span class="kv-val">N</span></div>
+              <div class="kv-row"><span class="kv-key">Gift Message</span><span class="kv-val" style="color:var(--text-3);">—</span></div>
+            </div>
+            <!-- Facility block -->
+            <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);">
+              <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Facility</div>
+              <a href="#" class="kv-val link" style="display:block;margin-bottom:4px;font-size:11.5px;">ZIRET_WH: Ziziwork Retail Warehouse</a>
+              <div style="font-size:11px;color:var(--text-3);line-height:1.8;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;">
+                <strong style="color:var(--text-2);">To: Ziziwork Retail &amp; Wholesale</strong><br>
+                51 W. Center St. #5432<br>
+                Orem, UT 84057-4605 USA<br>
+                T: 1-801-234-5678
+              </div>
+            </div>
+          </div>
+
+          <!-- Col 2: Payment -->
+          <div style="padding:16px;border-right:1px solid var(--border);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div class="section-label" style="margin:0;">Payment</div>
+              <button class="btn-xs"><i class="bi bi-credit-card"></i> New Credit Card</button>
+            </div>
+            <div class="payment-alert">
+              <i class="bi bi-exclamation-triangle"></i>
+              Payments ($169.90) less than part total ($11,289.89)
+            </div>
+
+            <div class="payment-entry">
+              <div class="payment-entry-head">
+                <div>
+                  <div style="font-size:11px;color:var(--text-2);">Credit Card · Invoice Payment</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--text-1);font-family:var(--font-head);">$169.90</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                  <span class="status-badge sb-approved">Authorized</span>
+                  <button class="btn-xs" style="font-size:10px;"><i class="bi bi-clock-history"></i> History</button>
+                </div>
+              </div>
+              <div class="payment-entry-body">
+                <div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+                  <a href="#" style="font-size:11px;color:var(--amber);text-decoration:none;">Edit Payment 100008</a>
+                  <span style="color:var(--text-3);">·</span>
+                  <a href="#" style="font-size:11px;color:var(--amber);text-decoration:none;">Edit Visa ············1111</a>
+                </div>
+                <div class="payment-detail">
+                  <strong>Visa ············1111</strong> 08/2020<br>
+                  <strong>JOE Q PUBLIC</strong><br>
+                  1350 E. Flamingo Rd. #2345<br>
+                  Las Vegas, NV 89119-5263<br>
+                  P: 1-702-234-5678
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-entry">
+              <div class="payment-entry-head">
+                <div>
+                  <div style="font-size:11px;color:var(--text-2);">Financial Account · Invoice Payment</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--text-1);font-family:var(--font-head);">$169.90</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                  <span class="status-badge sb-declined">Declined</span>
+                  <div style="display:flex;gap:4px;">
+                    <button class="btn-xs" style="font-size:10px;"><i class="bi bi-shield-check"></i> Authorize</button>
+                    <button class="btn-xs" style="font-size:10px;"><i class="bi bi-clock-history"></i> History</button>
+                  </div>
+                </div>
+              </div>
+              <div class="payment-entry-body">
+                <a href="#" style="font-size:11px;color:var(--amber);text-decoration:none;">Edit Payment 100209</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col 3: Shipping -->
+          <div style="padding:16px;">
+            <div class="section-label">Shipping Address &amp; Method</div>
+            <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;">
+                <div class="address-block">
+                  <strong>To: Joe Q. Public</strong><br>
+                  1350 E. Flamingo Rd. #2345<br>
+                  Las Vegas, NV 89119-5263 USA<br>
+                  T: 1-702-234-5678
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+                  <span class="status-badge sb-warn">Trust: New</span>
+                  <button class="btn-xs primary">Validate</button>
+                </div>
+              </div>
+              <div style="border-top:1px solid var(--border);padding-top:8px;">
+                <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Shipment Method</div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <i class="bi bi-truck" style="font-size:12px;color:var(--text-2);"></i>
+                  <span style="font-size:12px;color:var(--text-2);">Ground Parcel</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /3-col grid -->
+      </div><!-- /Sales Order Part card -->
+
+      <!-- ── ORDER ITEMS CARD ── -->
+      <div class="card">
+        <div class="part-header">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="part-title" style="font-size:12px;">Order Items — Part 01</div>
+            <span class="summary-pill">2 line items</span>
+          </div>
+        </div>
+
+        <!-- Column Headers -->
+        <div class="items-scroll">
+        <div class="items-thead">
+          <div class="ith">#<br><span style="opacity:.4;font-size:8px;">Part</span></div>
+          <div class="ith">Type<br>Product ID<br>Other Party ID</div>
+          <div class="ith">Description<br>Comments<br>Req. By Date</div>
+          <div class="ith">List Price<br>Price<br>Qty · Reason</div>
+          <div class="ith">Not Shipped / Billed<br>Asset Reservations<br>Standard Cost</div>
+          <div class="ith right">Item Total<br>With Children</div>
+          <div class="ith right">Returns</div>
+        </div>
+
+          <!-- ── ITEM 01 ── -->
+          <div class="item-card">
+
+            <!-- # -->
+            <div class="itd itd-idx">
+              <div class="idx-num">01</div>
+              <div class="idx-part">Part 01</div>
+            </div>
+
+            <!-- Type / Product -->
+            <div class="itd">
+              <span class="prod-type"><i class="bi bi-box"></i> Product</span>
+              <a href="#" class="prod-id">DEMO_1_1</a>
+              <div class="prod-name-sm">Demo Product One-One</div>
+            </div>
+
+            <!-- Description -->
+            <div class="itd">
+              <div class="desc-main">Demo Product One-One</div>
+            </div>
+
+            <!-- Pricing -->
+            <div class="itd">
+              <div class="price-original">$19.99</div>
+              <div class="price-unit">$16.99</div>
+              <a href="#" class="price-hist"><i class="bi bi-graph-up-arrow"></i> Price History</a>
+              <div class="qty-row">
+                <span class="qty-num">10</span>
+                <span class="qty-unit">units</span>
+              </div>
+              <a href="#" class="price-hist"><i class="bi bi-bar-chart-line"></i> Quantity History</a>
+            </div>
+
+            <!-- Fulfillment -->
+            <div class="itd">
+              <div class="fulfill-ratio">
+                <span class="fulfill-label">Not Shipped</span>
+                <span class="fulfill-fraction">0 / 10</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width:0%"></div>
+              </div>
+              <div class="asset-pill">
+                <i class="bi bi-archive"></i>
+                <span>Asset 55300 · Res: 10, Not Avail: 10, Not Issued: 10</span>
+              </div>
+              <div class="asset-actions">
+                <button class="btn-xs"><i class="bi bi-bookmark-check"></i> Reserve Assets</button>
+                <button class="btn-xs danger"><i class="bi bi-trash3"></i></button>
+              </div>
+            </div>
+
+            <!-- Item Total -->
+            <div class="itd right">
+              <div class="total-main">$169.90</div>
+              <div class="total-children">$169.90</div>
+            </div>
+
+            <!-- Billing -->
+            <div class="itd right">
+              <div class="bill-grid">
+                <div class="bill-row">
+                  <span class="bill-key">Billed:</span>
+                  <span class="bill-val zero">0</span>
+                </div>
+                <div class="bill-row">
+                  <span class="bill-key">Returned:</span>
+                  <span class="bill-val zero">0</span>
+                </div>
+                <div class="bill-row">
+                  <span class="bill-key">Returnable:</span>
+                  <span class="bill-val zero">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ITEM 02 ── -->
+          <div class="item-card">
+
+            <!-- # -->
+            <div class="itd itd-idx">
+              <div class="idx-num">02</div>
+              <div class="idx-part">Part 01</div>
+            </div>
+
+            <!-- Type / Product -->
+            <div class="itd">
+              <span class="prod-type"><i class="bi bi-box"></i> Product</span>
+              <a href="#" class="prod-id">DEMO_1_2</a>
+              <div class="prod-name-sm">Demo Product One-Two</div>
+            </div>
+
+            <!-- Description -->
+            <div class="itd">
+              <div class="desc-main">Demo Product One-Two</div>
+            </div>
+
+            <!-- Pricing -->
+            <div class="itd">
+              <div class="price-unit price-no-orig">$11,119.99</div>
+              <a href="#" class="price-hist"><i class="bi bi-graph-up-arrow"></i> Price History</a>
+              <div class="qty-row">
+                <span class="qty-num">1</span>
+                <span class="qty-unit">unit</span>
+              </div>
+              <a href="#" class="price-hist"><i class="bi bi-bar-chart-line"></i> Quantity History</a>
+            </div>
+
+            <!-- Fulfillment -->
+            <div class="itd">
+              <div class="fulfill-ratio">
+                <span class="fulfill-label">Not Shipped</span>
+                <span class="fulfill-fraction">0 / 1</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width:0%"></div>
+              </div>
+              <div class="asset-pill">
+                <i class="bi bi-archive"></i>
+                <span>Asset DEMO_1_2_POPC · Res: 1, Not Avail: 0, Not Issued: 1</span>
+              </div>
+              <div class="asset-actions">
+                <button class="btn-xs"><i class="bi bi-bookmark-check"></i> Reserve Assets</button>
+                <button class="btn-xs danger"><i class="bi bi-trash3"></i></button>
+              </div>
+            </div>
+
+            <!-- Item Total -->
+            <div class="itd right">
+              <div class="total-main">$11,119.99</div>
+              <div class="total-children">$11,119.99</div>
+            </div>
+
+            <!-- Billing -->
+            <div class="itd right">
+              <div class="bill-grid">
+                <div class="bill-row">
+                  <span class="bill-key">Billed:</span>
+                  <span class="bill-val zero">0</span>
+                </div>
+                <div class="bill-row">
+                  <span class="bill-key">Returned:</span>
+                  <span class="bill-val zero">0</span>
+                </div>
+                <div class="bill-row">
+                  <span class="bill-key">Returnable:</span>
+                  <span class="bill-val zero">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div class="items-summary">
+            <div class="summary-left">
+              <span class="summary-pill">2 line items</span>
+              <span class="summary-pill">Part 01</span>
+            </div>
+            <div class="summary-right">
+              <span class="summary-label">Part Total</span>
+              <span class="summary-amount">$11,289.89</span>
+            </div>
+          </div>
+        </div><!-- /items-scroll -->
+
+      </div><!-- /Order Items card -->
+
+    </div><!-- /body-scroll -->
+  </main>
+</div>
+
+<!-- STATUS BAR -->
+<footer class="status-bar">
+  <div class="status-item"><span class="status-dot-green"></span> Connected · ZIRET workspace</div>
+  <div class="status-item"><i class="bi bi-shield-check" style="font-size:10px;color:var(--green)"></i> All permissions verified</div>
+  <div style="flex:1;"></div>
+  <div class="status-item">Marble ERP v4.2.1</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Theme toggle
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon   = document.getElementById('themeIcon');
+  let isLight = false;
+  themeToggle.addEventListener('click', () => {
+    isLight = !isLight;
+    root.setAttribute('data-theme', isLight ? 'light' : 'dark');
+    themeIcon.className = isLight ? 'bi bi-moon' : 'bi bi-sun';
+  });
+
+  // Sidebar toggle
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('sidebarToggle');
+  const toggleIcon = document.getElementById('toggleIcon');
+  toggleBtn.addEventListener('click', () => {
+    const collapsed = sidebar.classList.toggle('collapsed');
+    toggleIcon.className = collapsed ? 'bi bi-layout-sidebar' : 'bi bi-layout-sidebar-reverse';
+  });
+
+  // Tab switch
+  document.querySelectorAll('.page-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
