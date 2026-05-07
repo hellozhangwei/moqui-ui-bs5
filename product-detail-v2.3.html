@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>32GB USB Drive — Marble ERP</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── INLINE SVG ICONS ── */
+.ico { display:inline-flex; align-items:center; justify-content:center; width:1em; height:1em; vertical-align:-.125em; flex-shrink:0; }
+.ico svg { width:100%; height:100%; fill:currentColor; }
+/* ── TOKENS: DARK ── */
+:root {
+  --bg:         #0e0f11;
+  --bg-2:       #141518;
+  --bg-3:       #1a1c20;
+  --bg-4:       #212328;
+  --border:     rgba(255,255,255,.07);
+  --border-md:  rgba(255,255,255,.12);
+  --amber:      #f5a623;
+  --amber-dim:  rgba(245,166,35,.12);
+  --amber-glow: rgba(245,166,35,.06);
+  --text-1:     #f0f0ee;
+  --text-2:     #8a8d96;
+  --text-3:     #555860;
+  --green:      #34d399;
+  --blue:       #60a5fa;
+  --purple:     #a78bfa;
+  --red:        #f87171;
+  --orange:     #fb923c;
+  --grid-line:  rgba(255,255,255,.018);
+  --radius:     6px;
+  --font-mono:  'DM Mono', monospace;
+  --font-head:  'Syne', sans-serif;
+  --sidebar-w:  216px;
+  --topbar-h:   48px;
+}
+[data-theme="light"] {
+  --bg:         #f0f1f3;
+  --bg-2:       #ffffff;
+  --bg-3:       #f5f6f8;
+  --bg-4:       #eaecef;
+  --border:     rgba(0,0,0,.08);
+  --border-md:  rgba(0,0,0,.13);
+  --amber:      #d4890a;
+  --amber-dim:  rgba(212,137,10,.1);
+  --amber-glow: rgba(212,137,10,.05);
+  --text-1:     #111318;
+  --text-2:     #5c6070;
+  --text-3:     #9ea3b0;
+  --green:      #16a34a;
+  --blue:       #2563eb;
+  --purple:     #7c3aed;
+  --red:        #dc2626;
+  --orange:     #ea580c;
+  --grid-line:  rgba(0,0,0,.04);
+}
+*, *::before, *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+  transition: background-color .25s ease, border-color .25s ease, color .2s ease;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--font-mono); font-size: 12.5px;
+  background: var(--bg); color: var(--text-1);
+  display: flex; flex-direction: column;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0; transition: none;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: relative; z-index: 100;
+  height: var(--topbar-h); background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 16px; gap: 12px; flex-shrink: 0;
+}
+.logo {
+  font-family: var(--font-head); font-weight: 800; font-size: 15px;
+  letter-spacing: -.5px; color: var(--text-1); text-decoration: none;
+  display: flex; align-items: center; gap: 7px;
+}
+.logo-mark {
+  width: 22px; height: 22px; background: var(--amber); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #000;
+}
+.top-divider { width: 1px; height: 20px; background: var(--border-md); flex-shrink: 0; }
+.breadcrumb-nav {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11.5px; color: var(--text-2); flex: 1;
+}
+.breadcrumb-nav a { color: var(--text-3); text-decoration: none; }
+.breadcrumb-nav a:hover { color: var(--amber); }
+.breadcrumb-nav .cur { color: var(--text-1); }
+.breadcrumb-nav .sep { color: var(--text-3); font-size: 10px; }
+.top-end { display: flex; align-items: center; gap: 8px; }
+.org-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg-3); border: 1px solid var(--border-md);
+  border-radius: var(--radius); padding: 4px 10px;
+  font-size: 11.5px; font-weight: 500; color: var(--text-1); cursor: pointer;
+}
+.org-chip:hover { border-color: var(--amber); }
+.org-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.icon-btn {
+  width: 28px; height: 28px; border: 1px solid var(--border);
+  background: transparent; border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-2); font-size: 13px; cursor: pointer;
+}
+.icon-btn:hover { border-color: var(--border-md); color: var(--text-1); background: var(--bg-3); }
+.avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--amber), #e07b0a);
+  color: #000; font-size: 10.5px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); cursor: pointer;
+}
+
+/* ── LAYOUT ── */
+.layout { display: flex; flex: 1; overflow: hidden; position: relative; z-index: 1; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w); background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow-y: auto; overflow-x: hidden; flex-shrink: 0; padding: 8px 0;
+  transition: width .22s cubic-bezier(.4,0,.2,1);
+}
+.sidebar.collapsed { width: 48px; }
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--bg-4); }
+.sidebar-toggle {
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 6px 10px 2px; flex-shrink: 0;
+}
+.sidebar.collapsed .sidebar-toggle { justify-content: center; padding: 6px 0 2px; }
+.sidebar-toggle-btn {
+  width: 24px; height: 24px; border: 1px solid var(--border);
+  background: transparent; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-3); cursor: pointer; font-size: 12px;
+}
+.sidebar-toggle-btn:hover { border-color: var(--border-md); color: var(--text-1); }
+.nav-group { padding: 8px 12px 4px; }
+.sidebar.collapsed .nav-group { padding: 6px 6px 4px; }
+.nav-label {
+  font-size: 9.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-3); padding: 0 6px; margin-bottom: 4px; font-family: var(--font-head);
+  white-space: nowrap; max-height: 30px; overflow: hidden;
+}
+.sidebar.collapsed .nav-label { opacity: 0; max-height: 0; margin: 0; padding: 0; }
+.nav-link {
+  display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+  border-radius: var(--radius); font-size: 12px; color: var(--text-2);
+  text-decoration: none; cursor: pointer; white-space: nowrap; overflow: hidden;
+  font-family: var(--font-mono);
+}
+.nav-link i { font-size: 13px; width: 15px; text-align: center; flex-shrink: 0; }
+.nav-link:hover { background: var(--bg-3); color: var(--text-1); }
+.nav-link.active { color: rgba(245,166,35,.65); }
+.sidebar.collapsed .nav-link { justify-content: center; padding: 8px 0; gap: 0; position: relative; }
+.sidebar.collapsed .nav-link .nav-text { opacity: 0; width: 0; overflow: hidden; }
+.sidebar.collapsed .nav-link[data-label]::after {
+  content: attr(data-label); position: absolute; left: calc(100% + 8px); top: 50%;
+  transform: translateY(-50%); background: var(--bg-4); color: var(--text-1);
+  font-size: 11.5px; font-family: var(--font-mono); padding: 4px 10px; border-radius: 4px;
+  border: 1px solid var(--border-md); white-space: nowrap; pointer-events: none;
+  opacity: 0; z-index: 300;
+}
+.sidebar.collapsed .nav-link[data-label]:hover::after { opacity: 1; }
+.nav-sub { padding-left: 16px; max-height: 300px; overflow: hidden; }
+.nav-sub .nav-link { font-size: 11.5px; padding: 5px 10px; }
+.sidebar.collapsed .nav-sub { max-height: 0; opacity: 0; pointer-events: none; }
+.nav-sep { border: none; border-top: 1px solid var(--border); margin: 6px 12px; }
+.sidebar.collapsed .nav-sep { margin: 6px 8px; }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: var(--bg-2); border-bottom: 1px solid var(--border);
+  padding: 14px 28px 0; flex-shrink: 0;
+}
+.product-crumbs {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
+}
+.product-crumb {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-family: var(--font-mono);
+  background: var(--bg-3); border: 1px solid var(--border);
+  border-radius: 4px; padding: 2px 8px; color: var(--text-2);
+}
+.product-crumb i { font-size: 10px; color: var(--text-3); }
+.product-crumb.amber-tag { color: var(--amber); border-color: rgba(245,166,35,.2); background: var(--amber-dim); }
+
+.page-title-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+}
+.product-title {
+  font-family: var(--font-head); font-size: 24px; font-weight: 800;
+  letter-spacing: -.6px; color: var(--text-1); line-height: 1;
+}
+.product-sub {
+  font-size: 11.5px; color: var(--text-3); margin-top: 5px; font-family: var(--font-mono);
+}
+.hdr-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px;
+  border: 1px solid var(--border-md); border-radius: var(--radius);
+  background: transparent; font-size: 11.5px; color: var(--text-2);
+  cursor: pointer; font-family: var(--font-mono);
+}
+.btn-ghost:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+.btn-ghost i { font-size: 12px; }
+.btn-primary-amber {
+  display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px;
+  border: none; border-radius: var(--radius); background: var(--amber);
+  font-size: 11.5px; font-weight: 500; color: #000; cursor: pointer;
+  font-family: var(--font-mono); box-shadow: 0 0 20px rgba(245,166,35,.25);
+}
+.btn-primary-amber:hover { background: #ffb83d; box-shadow: 0 0 28px rgba(245,166,35,.4); }
+
+/* stat strip */
+.stat-strip {
+  display: flex; gap: 0; margin-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.stat-cell {
+  flex: 1; padding: 10px 16px; border-right: 1px solid var(--border);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-label {
+  font-size: 9px; font-family: var(--font-head); font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px;
+}
+.stat-value {
+  font-size: 13px; font-weight: 600; color: var(--text-1);
+  font-family: var(--font-head); letter-spacing: -.2px;
+}
+.stat-value.muted { color: var(--text-2); font-weight: 400; font-size: 12px; }
+
+/* tabs */
+.page-tabs { display: flex; gap: 0; }
+.page-tab {
+  padding: 9px 16px; font-size: 11.5px; font-family: var(--font-mono);
+  color: var(--text-3); cursor: pointer; border-bottom: 2px solid transparent;
+  transition: .15s; user-select: none;
+}
+.page-tab:hover { color: var(--text-1); }
+.page-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+/* ── BODY ── */
+.body-wrap { flex: 1; display: flex; overflow: hidden; }
+.body-scroll {
+  flex: 1; overflow-y: auto; padding: 20px 28px 40px;
+  display: flex; gap: 20px;
+}
+.body-scroll::-webkit-scrollbar { width: 5px; }
+.body-scroll::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+
+/* ── CARD ── */
+.card {
+  background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;
+  animation: fadeUp .3s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card:nth-child(1) { animation-delay: .04s; }
+.card:nth-child(2) { animation-delay: .09s; }
+.card:nth-child(3) { animation-delay: .14s; }
+.card:nth-child(4) { animation-delay: .19s; }
+.card:nth-child(5) { animation-delay: .24s; }
+.card:nth-child(6) { animation-delay: .29s; }
+
+.card-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  background: var(--bg-3); border-radius: 8px 8px 0 0;
+}
+.card-title {
+  font-family: var(--font-head); font-size: 11px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text-2);
+}
+.card-subtitle { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.card-actions { display: flex; gap: 6px; align-items: flex-start; }
+.card-body { padding: 16px; }
+
+/* ── FORM ELEMENTS ── */
+.form-group { margin-bottom: 14px; }
+.form-group:last-child { margin-bottom: 0; }
+.form-label {
+  display: block; font-size: 9.5px; font-family: var(--font-head); font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px;
+}
+.form-control {
+  width: 100%; background: var(--bg-3); border: 1px solid var(--border-md);
+  border-radius: var(--radius); color: var(--text-1); font-family: var(--font-mono);
+  font-size: 12.5px; padding: 7px 10px; outline: none;
+  transition: border-color .15s;
+  -webkit-appearance: none;
+}
+.form-control:focus {
+  background: var(--bg-3);
+  border-color: rgba(245,166,35,.5);
+  box-shadow: 0 0 0 3px rgba(245,166,35,.06);
+  outline: none;
+  color: var(--text-1);
+}
+[data-theme="light"] .form-control:focus {
+  border-color: rgba(212,137,10,.45);
+  box-shadow: 0 0 0 3px rgba(212,137,10,.07);
+}
+.form-control:hover:not(:focus) { border-color: rgba(255,255,255,.18); }
+[data-theme="light"] .form-control:hover:not(:focus) { border-color: rgba(0,0,0,.2); }
+.form-control::placeholder { color: var(--text-3); }
+textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
+/* ── CUSTOM SELECT ── */
+.custom-select { position: relative; width: 100%; }
+.custom-select-trigger {
+  width: 100%; background: var(--bg-3); border: 1px solid var(--border-md);
+  border-radius: var(--radius); color: var(--text-1); font-family: var(--font-mono);
+  font-size: 12.5px; padding: 7px 30px 7px 10px; outline: none;
+  cursor: pointer; user-select: none;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: border-color .15s;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.custom-select-trigger.placeholder-val { color: var(--text-3); }
+.custom-select-trigger .cs-arrow {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 10px; color: var(--text-3); pointer-events: none;
+  transition: transform .18s, color .15s;
+}
+.custom-select.open .cs-arrow { transform: translateY(-50%) rotate(180deg); color: var(--amber); }
+.custom-select.open .custom-select-trigger {
+  border-color: rgba(245,166,35,.5);
+  box-shadow: 0 0 0 3px rgba(245,166,35,.06);
+}
+.custom-select-trigger:hover { border-color: rgba(255,255,255,.18); }
+[data-theme="light"] .custom-select-trigger:hover { border-color: rgba(0,0,0,.2); }
+
+.custom-select-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--bg-4); border: 1px solid var(--border-md);
+  border-radius: var(--radius); z-index: 999;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  display: none;
+  animation: dropIn .12s ease;
+}
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.custom-select.open .custom-select-dropdown { display: block; }
+
+.cs-option {
+  padding: 7px 12px; font-size: 12px; font-family: var(--font-mono);
+  color: var(--text-2); cursor: pointer; transition: background .1s, color .1s;
+  display: flex; align-items: center; gap: 8px;
+}
+.cs-option:hover { background: var(--bg-3); color: var(--text-1); }
+.cs-option.selected { color: var(--amber); background: var(--amber-dim); }
+.cs-option.selected::after {
+  content: '\F26E'; font-family: 'bootstrap-icons';
+  margin-left: auto; font-size: 11px;
+}
+.dim-field:focus {
+  border-color: rgba(245,166,35,.5);
+  background: var(--bg-3);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245,166,35,.06);
+}
+
+/* ── DATE PICKER ── */
+.dp-wrap { position: relative; width: 100%; }
+
+.dp-trigger {
+  width: 100%; background: var(--bg-3); border: 1px solid var(--border-md);
+  border-radius: var(--radius); color: var(--text-2); font-family: var(--font-mono);
+  font-size: 12.5px; padding: 7px 10px; outline: none; cursor: pointer;
+  display: flex; align-items: center; gap: 8px; text-align: left;
+  transition: border-color .15s;
+}
+.dp-trigger:hover { border-color: rgba(255,255,255,.18); }
+[data-theme="light"] .dp-trigger:hover { border-color: rgba(0,0,0,.2); }
+.dp-trigger.has-value { color: var(--text-1); }
+.dp-trigger.open {
+  border-color: rgba(245,166,35,.5);
+  box-shadow: 0 0 0 3px rgba(245,166,35,.06);
+}
+.dp-trigger i.bi-calendar3 { color: var(--text-3); font-size: 13px; flex-shrink: 0; }
+.dp-display { flex: 1; }
+.dp-clear {
+  color: var(--text-3); font-size: 12px; flex-shrink: 0;
+  opacity: .6; transition: opacity .12s, color .12s;
+}
+.dp-clear:hover { opacity: 1; color: var(--red); }
+
+/* Calendar panel */
+.dp-panel {
+  position: absolute; top: calc(100% + 6px); left: 0;
+  background: var(--bg-4); border: 1px solid var(--border-md);
+  border-radius: 8px; z-index: 600; width: 272px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3);
+  animation: dpIn .14s cubic-bezier(.2,0,.2,1) both;
+  overflow: hidden;
+}
+[data-theme="light"] .dp-panel {
+  box-shadow: 0 8px 24px rgba(0,0,0,.13), 0 2px 6px rgba(0,0,0,.07);
+}
+@keyframes dpIn {
+  from { opacity: 0; transform: translateY(-6px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Nav header */
+.dp-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px 8px; border-bottom: 1px solid var(--border);
+}
+.dp-nav-title {
+  font-family: var(--font-head); font-size: 13px; font-weight: 700;
+  color: var(--text-1); cursor: pointer; letter-spacing: -.2px;
+  padding: 2px 6px; border-radius: 4px; transition: background .12s;
+}
+.dp-nav-title:hover { background: var(--bg-3); }
+.dp-nav-btn {
+  width: 26px; height: 26px; border: 1px solid var(--border);
+  background: transparent; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-2); cursor: pointer; font-size: 12px;
+  transition: .12s;
+}
+.dp-nav-btn:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+
+/* Weekday headers */
+.dp-weekdays {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  padding: 6px 8px 2px;
+}
+.dp-wd {
+  text-align: center; font-size: 9.5px; font-family: var(--font-head);
+  font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-3); padding: 4px 0;
+}
+
+/* Day grid */
+.dp-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  padding: 0 8px 10px; gap: 1px;
+}
+.dp-day {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-family: var(--font-mono);
+  color: var(--text-2); cursor: pointer; border-radius: 5px;
+  transition: background .1s, color .1s;
+}
+.dp-day:hover { background: var(--bg-3); color: var(--text-1); }
+.dp-day.other-month { color: var(--text-3); opacity: .45; }
+.dp-day.today {
+  color: var(--amber); font-weight: 600;
+  position: relative;
+}
+.dp-day.today::after {
+  content: ''; position: absolute; bottom: 3px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%; background: var(--amber);
+}
+.dp-day.selected {
+  background: var(--amber); color: #000; font-weight: 600;
+  box-shadow: 0 0 10px rgba(245,166,35,.35);
+}
+.dp-day.selected:hover { background: #ffb83d; }
+.dp-day.disabled { opacity: .25; pointer-events: none; }
+
+/* Footer shortcuts */
+.dp-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; border-top: 1px solid var(--border);
+  background: var(--bg-3);
+}
+.dp-shortcut {
+  font-size: 11px; font-family: var(--font-mono); color: var(--text-3);
+  cursor: pointer; padding: 2px 6px; border-radius: 3px;
+  transition: color .12s, background .12s;
+}
+.dp-shortcut:hover { color: var(--amber); background: var(--amber-dim); }
+.dp-footer-clear {
+  font-size: 11px; font-family: var(--font-mono); color: var(--text-3);
+  cursor: pointer; padding: 2px 6px; border-radius: 3px;
+  transition: color .12s;
+}
+.dp-footer-clear:hover { color: var(--red); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* radio group */
+.radio-group { display: flex; gap: 16px; align-items: center; margin-top: 2px; }
+.radio-opt {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-2); cursor: pointer;
+}
+.radio-opt input { accent-color: var(--amber); width: 13px; height: 13px; cursor: pointer; }
+.radio-opt.checked { color: var(--text-1); }
+
+/* ── BTN XS ── */
+.btn-xs {
+  display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+  border-radius: 4px; font-size: 11px; font-family: var(--font-mono);
+  cursor: pointer; border: 1px solid var(--border-md);
+  background: transparent; color: var(--text-2); white-space: nowrap;
+}
+.btn-xs:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+.btn-xs.primary { background: var(--amber); border-color: var(--amber); color: #000; }
+.btn-xs.primary:hover { background: #ffb83d; }
+.btn-xs.danger { color: var(--red); border-color: rgba(248,113,113,.25); }
+.btn-xs.danger:hover { background: rgba(248,113,113,.08); border-color: var(--red); }
+.btn-xs i { font-size: 10px; }
+
+/* ── SECTION LABEL ── */
+.section-label {
+  font-family: var(--font-head); font-size: 10px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  background: var(--bg-3); border: 1px dashed var(--border-md);
+  border-radius: var(--radius); padding: 14px 16px;
+  font-size: 11.5px; color: var(--text-3); text-align: center;
+  font-family: var(--font-mono);
+}
+
+/* ── TABLE MINI ── */
+.kv-table { width: 100%; border-collapse: collapse; }
+.kv-table th {
+  font-size: 9.5px; font-family: var(--font-head); font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--text-3);
+  padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left;
+}
+.kv-table td {
+  font-size: 12px; padding: 9px 10px; color: var(--text-2);
+  border-bottom: 1px solid var(--border); font-family: var(--font-mono);
+}
+.kv-table tr:last-child td { border-bottom: none; }
+.kv-table tr:hover td { background: var(--bg-3); }
+
+/* dimensions row */
+.dim-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+}
+.dim-row:last-child { border-bottom: none; }
+.dim-field {
+  flex: 1; background: var(--bg-3); border: 1px solid var(--border);
+  border-radius: 4px; padding: 5px 8px;
+  font-size: 12px; color: var(--text-1); font-family: var(--font-mono);
+  outline: none;
+}
+.dim-field:focus { border-color: var(--amber); }
+.dim-label { font-size: 10px; color: var(--text-3); min-width: 36px; }
+
+/* tag chip */
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; padding: 2px 8px; border-radius: 3px;
+  border: 1px solid; font-family: var(--font-mono);
+}
+.chip-blue { color: var(--blue); border-color: rgba(96,165,250,.25); background: rgba(96,165,250,.07); }
+.chip-amber { color: var(--amber); border-color: rgba(245,166,35,.25); background: var(--amber-dim); }
+.chip-green { color: var(--green); border-color: rgba(52,211,153,.25); background: rgba(52,211,153,.07); }
+
+/* ── STATUS BAR ── */
+.status-bar {
+  position: relative; z-index: 10; height: 28px;
+  background: var(--bg-2); border-top: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 28px; gap: 16px; flex-shrink: 0;
+}
+.status-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10.5px; color: var(--text-3); font-family: var(--font-mono);
+}
+.status-dot-green { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+
+/* ── LEFT / RIGHT COLUMNS ── */
+.col-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.col-right { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="#" class="logo">
+    <div class="logo-mark">M</div>
+    Marble ERP
+  </a>
+  <div class="top-divider"></div>
+  <nav class="breadcrumb-nav">
+    <a href="#">Applications</a>
+    <span class="sep"><i class="bi bi-chevron-right"></i></span>
+    <a href="#">Catalog</a>
+    <span class="sep"><i class="bi bi-chevron-right"></i></span>
+    <a href="#">Products</a>
+    <span class="sep"><i class="bi bi-chevron-right"></i></span>
+    <span class="cur">DEMO_USB32G</span>
+  </nav>
+  <div class="top-end">
+    <div class="org-chip">
+      <span class="org-dot"></span> ZIRET
+      <i class="bi bi-chevron-down" style="font-size:9px;opacity:.5"></i>
+    </div>
+    <button class="icon-btn" id="themeToggle"><i class="bi bi-sun" id="themeIcon"></i></button>
+    <button class="icon-btn"><i class="bi bi-bell"></i></button>
+    <button class="icon-btn"><i class="bi bi-clock-history"></i></button>
+    <button class="icon-btn"><i class="bi bi-question-circle"></i></button>
+    <div class="avatar">JD</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-toggle">
+      <button class="sidebar-toggle-btn" id="sidebarToggle">
+        <i class="bi bi-layout-sidebar-reverse" id="toggleIcon"></i>
+      </button>
+    </div>
+    <div class="nav-group">
+      <div class="nav-label">System</div>
+      <a href="#" class="nav-link" data-label="Dashboard"><i class="bi bi-grid-1x2"></i><span class="nav-text"> Dashboard</span></a>
+      <a href="#" class="nav-link" data-label="Quick Search"><i class="bi bi-search"></i><span class="nav-text"> Quick Search</span></a>
+      <a href="#" class="nav-link" data-label="Accounting"><i class="bi bi-receipt-cutoff"></i><span class="nav-text"> Accounting</span></a>
+      <a href="#" class="nav-link" data-label="Asset"><i class="bi bi-box-seam"></i><span class="nav-text"> Asset</span></a>
+    </div>
+    <hr class="nav-sep">
+    <div class="nav-group">
+      <div class="nav-label">Catalog</div>
+      <a href="#" class="nav-link" data-label="Dashboard"><i class="bi bi-speedometer2"></i><span class="nav-text"> Dashboard</span></a>
+      <a href="#" class="nav-link active" data-label="Products"><i class="bi bi-archive"></i><span class="nav-text"> Products</span></a>
+      <div class="nav-sub">
+        <a href="#" class="nav-link active" data-label="Product"><i class="bi bi-dot"></i><span class="nav-text"> Product</span></a>
+        <a href="#" class="nav-link" data-label="Content"><i class="bi bi-dot"></i><span class="nav-text"> Content</span></a>
+        <a href="#" class="nav-link" data-label="Associated"><i class="bi bi-dot"></i><span class="nav-text"> Associated</span></a>
+        <a href="#" class="nav-link" data-label="Categories"><i class="bi bi-dot"></i><span class="nav-text"> Categories</span></a>
+        <a href="#" class="nav-link" data-label="Prices"><i class="bi bi-dot"></i><span class="nav-text"> Prices</span></a>
+      </div>
+      <a href="#" class="nav-link" data-label="Categories"><i class="bi bi-tags"></i><span class="nav-text"> Categories</span></a>
+      <a href="#" class="nav-link" data-label="Features"><i class="bi bi-toggles"></i><span class="nav-text"> Features</span></a>
+      <a href="#" class="nav-link" data-label="Feature Groups"><i class="bi bi-layers"></i><span class="nav-text"> Feature Groups</span></a>
+    </div>
+    <hr class="nav-sep">
+    <div class="nav-group">
+      <div class="nav-label">Operations</div>
+      <a href="#" class="nav-link" data-label="Customers"><i class="bi bi-people"></i><span class="nav-text"> Customers</span></a>
+      <a href="#" class="nav-link" data-label="Facility"><i class="bi bi-building"></i><span class="nav-text"> Facility</span></a>
+      <a href="#" class="nav-link" data-label="Manufacturing"><i class="bi bi-gear-wide-connected"></i><span class="nav-text"> Manufacturing</span></a>
+      <a href="#" class="nav-link" data-label="Orders"><i class="bi bi-bag-check"></i><span class="nav-text"> Orders</span></a>
+      <a href="#" class="nav-link" data-label="Parties"><i class="bi bi-diagram-3"></i><span class="nav-text"> Parties</span></a>
+      <a href="#" class="nav-link" data-label="Projects"><i class="bi bi-kanban"></i><span class="nav-text"> Projects</span></a>
+      <a href="#" class="nav-link" data-label="Returns"><i class="bi bi-arrow-return-left"></i><span class="nav-text"> Returns</span></a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-title-row">
+        <div>
+          <!-- breadcrumb chips -->
+          <div class="product-crumbs">
+            <span class="product-crumb"><i class="bi bi-box"></i> Finished Good</span>
+            <span class="product-crumb"><i class="bi bi-building-fill"></i> ZIRET</span>
+            <span class="product-crumb amber-tag"><i class="bi bi-upc-scan"></i> DEMO_USB32G</span>
+          </div>
+          <div class="product-title">32GB USB Drive</div>
+          <div class="product-sub">Product detail, classification, dimensions, references, and facility mapping.</div>
+        </div>
+        <div class="hdr-actions">
+          <button class="btn-ghost"><i class="bi bi-copy"></i> Clone Product</button>
+          <button class="btn-ghost"><i class="bi bi-search"></i> Find Assets</button>
+          <button class="btn-primary-amber" id="saveBtn" onclick="handleSave()">
+            <i class="bi bi-floppy"></i> Save Changes
+          </button>
+        </div>
+      </div>
+
+      <!-- stat strip -->
+      <div class="stat-strip">
+        <div class="stat-cell">
+          <div class="stat-label">Type</div>
+          <div class="stat-value">Asset (Good)</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Asset Class</div>
+          <div class="stat-value">Inventory · Finished Good</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Shipping Weight</div>
+          <div class="stat-value">0.25 lb</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Facility Locations</div>
+          <div class="stat-value muted">0 mapped</div>
+        </div>
+      </div>
+
+      <!-- tabs -->
+      <div class="page-tabs">
+        <div class="page-tab active">Product</div>
+        <div class="page-tab">Content</div>
+        <div class="page-tab">Associated</div>
+        <div class="page-tab">Categories</div>
+        <div class="page-tab">Prices</div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="body-wrap">
+      <div class="body-scroll">
+
+        <!-- LEFT COL -->
+        <div class="col-left">
+
+          <!-- Core Product Information -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Core Product Information</div>
+                <div class="card-subtitle">Maintain the primary descriptive and operational fields for this SKU.</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">ID</label>
+                <input type="text" class="form-control" value="DEMO_USB32G" oninput="markDirty()">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" value="32GB USB Drive" oninput="markDirty()">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" rows="4" placeholder="Add a clear product description for internal users and connected downstream channels." oninput="markDirty()"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Internal Comments</label>
+                <textarea class="form-control" rows="3" placeholder="Internal handling notes, restrictions, or operational comments." oninput="markDirty()"></textarea>
+              </div>
+
+              <div class="form-row" style="margin-top:16px;">
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Type</label>
+                  <select class="form-control" onchange="markDirty()">
+                    <option selected>Asset (Good)</option>
+                    <option>Service</option>
+                    <option>Digital</option>
+                    <option>Kit</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Class</label>
+                  <select class="form-control" onchange="markDirty()">
+                    <option>Select class</option>
+                    <option selected>Product Class</option>
+                    <option>Stocked Product</option>
+                    <option>Bundled Product</option>
+                    <option>Sub Assembly</option>
+                    <option>Raw Material</option>
+                    <option>Equipment</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row" style="margin-top:12px;">
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Asset Type</label>
+                  <select class="form-control" onchange="markDirty()">
+                    <option selected>Inventory</option>
+                    <option>Fixed Asset</option>
+                    <option>Leased</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Asset Class</label>
+                  <select class="form-control" onchange="markDirty()">
+                    <option selected>Inventory - Finished Good</option>
+                    <option>Inventory - Raw Material</option>
+                    <option>Manufacturing Equipment</option>
+                    <option>Digital Good</option>
+                    <option>Sub-assembly</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top:12px;">
+                <label class="form-label">Owned By Org</label>
+                <input type="text" class="form-control" value="N/A" oninput="markDirty()">
+              </div>
+
+              <div class="form-row" style="margin-top:12px;">
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Amount Included</label>
+                  <input type="text" class="form-control" placeholder="Enter quantity" oninput="markDirty()">
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">UOM</label>
+                  <select class="form-control" onchange="markDirty()">
+                    <option>Select UOM</option>
+                    <option>Each</option>
+                    <option>Case</option>
+                    <option>Box</option>
+                    <option>Pallet</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row" style="margin-top:12px;">
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Sales Introduction</label>
+                  <div class="dp-wrap" data-dp-id="dp-intro">
+                    <button type="button" class="dp-trigger">
+                      <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style="color:var(--text-3);flex-shrink:0;"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>
+                      <span class="dp-display">Select date</span>
+                      <span class="dp-clear" style="display:none;color:var(--text-3);">
+                        <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/></svg>
+                      </span>
+                    </button>
+                    <input type="hidden" class="dp-value" name="salesIntro">
+                  </div>
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Sales Discontinue</label>
+                  <div class="dp-wrap" data-dp-id="dp-disc">
+                    <button type="button" class="dp-trigger">
+                      <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style="color:var(--text-3);flex-shrink:0;"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>
+                      <span class="dp-display">Select date</span>
+                      <span class="dp-clear" style="display:none;color:var(--text-3);">
+                        <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/></svg>
+                      </span>
+                    </button>
+                    <input type="hidden" class="dp-value" name="salesDisc">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row" style="margin-top:12px;">
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Sign Required</label>
+                  <select class="form-control" onchange="markDirty()">
+                    <option>Select option</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Shipping Insurance Required</label>
+                  <div class="radio-group" style="margin-top:8px;">
+                    <label class="radio-opt">
+                      <input type="radio" name="insurance" value="yes" onchange="markDirty()"> Yes
+                    </label>
+                    <label class="radio-opt checked">
+                      <input type="radio" name="insurance" value="no" checked onchange="markDirty()"> No
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top:12px;">
+                <label class="form-label">Country of Origin</label>
+                <select class="form-control" onchange="markDirty()">
+                  <option>Select country</option>
+                  <option>United States</option>
+                  <option>China</option>
+                  <option>Germany</option>
+                  <option>Japan</option>
+                  <option>Taiwan</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COL -->
+        <div class="col-right">
+
+          <!-- Identification -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Identification</div>
+                <div class="card-subtitle">Reference keys for external systems.</div>
+              </div>
+              <button class="btn-xs"><i class="bi bi-plus-lg"></i> Add</button>
+            </div>
+            <div class="card-body">
+              <div class="empty-state">No primary identification records yet.</div>
+            </div>
+          </div>
+
+          <!-- Other Identification -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Other Identification</div>
+                <div class="card-subtitle">Cross-reference values for stores, segments, or partner systems.</div>
+              </div>
+              <div class="card-actions">
+                <button class="btn-xs"><i class="bi bi-link-45deg"></i> Generate URL Slug</button>
+                <button class="btn-xs"><i class="bi bi-plus-lg"></i> Add Other ID</button>
+              </div>
+            </div>
+            <div class="card-body" style="padding:0;">
+              <table class="kv-table">
+                <thead><tr><th>ID Type</th><th>ID Value</th></tr></thead>
+                <tbody>
+                  <tr><td>Product Store ID</td><td style="color:var(--text-3);">—</td></tr>
+                  <tr><td>Market Segment ID</td><td style="color:var(--text-3);">—</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Features</div>
+                <div class="card-subtitle">Attach configurable or descriptive product features.</div>
+              </div>
+              <div class="card-actions">
+                <button class="btn-xs"><i class="bi bi-plus-lg"></i> Apply New Feature</button>
+                <button class="btn-xs"><i class="bi bi-pencil"></i> Apply Feature</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="empty-state">No features have been assigned to this product.</div>
+            </div>
+          </div>
+
+          <!-- Dimensions -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Dimensions</div>
+                <div class="card-subtitle">Maintain physical measurement data used in logistics and pricing.</div>
+              </div>
+              <button class="btn-xs"><i class="bi bi-plus-lg"></i> Add Dimension</button>
+            </div>
+            <div class="card-body" style="padding:10px 14px;">
+              <div style="display:grid;grid-template-columns:100px 1fr 80px auto auto;gap:6px;align-items:center;margin-bottom:4px;">
+                <div style="font-size:9.5px;color:var(--text-3);font-family:var(--font-head);letter-spacing:.08em;text-transform:uppercase;">Type</div>
+                <div style="font-size:9.5px;color:var(--text-3);font-family:var(--font-head);letter-spacing:.08em;text-transform:uppercase;">Value</div>
+                <div style="font-size:9.5px;color:var(--text-3);font-family:var(--font-head);letter-spacing:.08em;text-transform:uppercase;">Unit</div>
+                <div></div><div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:100px 1fr 80px auto auto;gap:6px;align-items:center;">
+                <input type="text" class="dim-field" value="Shipping W." readonly style="font-size:11px;color:var(--text-3);">
+                <input type="number" class="dim-field" value="0.25" oninput="markDirty()">
+                <input type="text" class="dim-field" value="Weight: Po" readonly style="font-size:11px;color:var(--text-3);">
+                <button class="btn-xs primary" style="padding:3px 8px;font-size:10px;">Update</button>
+                <button class="btn-xs danger" style="padding:3px 7px;font-size:10px;"><i class="bi bi-trash3"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- UOM Dimensions -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">UOM Dimensions</div>
+                <div class="card-subtitle">Dimension values per unit of measure.</div>
+              </div>
+              <button class="btn-xs"><i class="bi bi-plus-lg"></i> Add UOM Dimension</button>
+            </div>
+            <div class="card-body">
+              <div class="empty-state">No UOM dimension records available.</div>
+            </div>
+          </div>
+
+          <!-- Facility Locations -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Facility Locations</div>
+                <div class="card-subtitle">Track location-level stocking rules and movement quantities.</div>
+              </div>
+              <button class="btn-xs"><i class="bi bi-plus-lg"></i> Add Location</button>
+            </div>
+            <div class="card-body">
+              <div class="empty-state">No facility locations mapped to this product yet.</div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /body-scroll -->
+    </div><!-- /body-wrap -->
+  </main>
+</div>
+
+<!-- STATUS BAR -->
+<footer class="status-bar">
+  <div class="status-item"><span class="status-dot-green"></span> Connected · ZIRET workspace</div>
+  <div class="status-item"><i class="bi bi-shield-check" style="font-size:10px;color:var(--green)"></i> All permissions verified</div>
+  <div style="flex:1;"></div>
+  <div class="status-item" id="dirtyIndicator" style="display:none;color:var(--amber);">
+    <i class="bi bi-circle-fill" style="font-size:7px;"></i> Unsaved changes
+  </div>
+  <div class="status-item">Marble ERP v4.2.1</div>
+</footer>
+
+<!-- ── DATE PICKER POPUP ── -->
+<div id="datePicker" class="dp-popup" style="display:none;">
+  <div class="dp-header">
+    <button type="button" class="dp-nav-btn" id="dpPrev">
+      <svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="dp-head-center">
+      <button type="button" class="dp-month-btn" id="dpMonthBtn"></button>
+      <button type="button" class="dp-year-btn"  id="dpYearBtn"></button>
+    </div>
+    <button type="button" class="dp-nav-btn" id="dpNext">
+      <svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </div>
+
+  <!-- Day grid view -->
+  <div id="dpDayView">
+    <div class="dp-weekdays">
+      <span>Su</span><span>Mo</span><span>Tu</span><span>We</span>
+      <span>Th</span><span>Fr</span><span>Sa</span>
+    </div>
+    <div class="dp-days" id="dpDays"></div>
+  </div>
+
+  <!-- Month picker view -->
+  <div id="dpMonthView" style="display:none;">
+    <div class="dp-grid-3" id="dpMonths"></div>
+  </div>
+
+  <!-- Year picker view -->
+  <div id="dpYearView" style="display:none;">
+    <div class="dp-grid-4" id="dpYears"></div>
+  </div>
+
+  <div class="dp-footer">
+    <button type="button" class="dp-today-btn" id="dpTodayBtn">Today</button>
+    <button type="button" class="dp-clear-btn" id="dpClearBtn">Clear</button>
+  </div>
+</div>
+
+<style>
+/* ── DATE PICKER TRIGGER ── */
+.dp-wrap { position: relative; }
+.dp-trigger {
+  width: 100%; background: var(--bg-3); border: 1px solid var(--border-md);
+  border-radius: var(--radius); color: var(--text-1); font-family: var(--font-mono);
+  font-size: 12.5px; padding: 7px 10px; outline: none; cursor: pointer;
+  text-align: left; display: flex; align-items: center; gap: 8px;
+  transition: border-color .15s;
+}
+.dp-trigger:hover { border-color: rgba(255,255,255,.18); }
+[data-theme="light"] .dp-trigger:hover { border-color: rgba(0,0,0,.2); }
+.dp-trigger.active {
+  border-color: rgba(245,166,35,.5);
+  box-shadow: 0 0 0 3px rgba(245,166,35,.06);
+}
+[data-theme="light"] .dp-trigger.active {
+  border-color: rgba(212,137,10,.45);
+  box-shadow: 0 0 0 3px rgba(212,137,10,.07);
+}
+.dp-trigger .bi-calendar3 { color: var(--text-3); font-size: 13px; flex-shrink: 0; }
+.dp-display { flex: 1; color: var(--text-3); }
+.dp-display.has-val { color: var(--text-1); }
+.dp-clear { color: var(--text-3); font-size: 12px; flex-shrink: 0; }
+.dp-clear:hover { color: var(--red); }
+
+/* ── POPUP ── */
+.dp-popup {
+  position: fixed;
+  width: 272px;
+  background: var(--bg-4);
+  border: 1px solid var(--border-md);
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.5), 0 4px 16px rgba(0,0,0,.3);
+  z-index: 1000;
+  overflow: hidden;
+  animation: dpIn .15s cubic-bezier(.2,0,.2,1) both;
+}
+[data-theme="light"] .dp-popup {
+  box-shadow: 0 16px 48px rgba(0,0,0,.15), 0 4px 16px rgba(0,0,0,.08);
+}
+@keyframes dpIn {
+  from { opacity: 0; transform: translateY(-6px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* header */
+.dp-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 12px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.dp-nav-btn {
+  width: 28px; height: 28px; border: 1px solid var(--border);
+  background: transparent; border-radius: 5px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-2); font-size: 11px; flex-shrink: 0;
+  transition: .12s;
+}
+.dp-nav-btn:hover { border-color: var(--border-md); color: var(--text-1); background: var(--bg-3); }
+.dp-head-center { display: flex; gap: 4px; }
+.dp-month-btn, .dp-year-btn {
+  background: transparent; border: none; cursor: pointer;
+  font-family: var(--font-head); font-weight: 600; font-size: 13px;
+  color: var(--text-1); padding: 3px 7px; border-radius: 4px;
+  transition: background .12s, color .12s;
+}
+.dp-month-btn:hover, .dp-year-btn:hover { background: var(--bg-3); color: var(--amber); }
+.dp-month-btn.active, .dp-year-btn.active { color: var(--amber); }
+
+/* weekday row */
+.dp-weekdays {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  padding: 8px 8px 2px;
+}
+.dp-weekdays span {
+  text-align: center; font-size: 10px; font-family: var(--font-head);
+  font-weight: 600; letter-spacing: .06em; color: var(--text-3);
+  padding: 4px 0;
+}
+
+/* day grid */
+.dp-days {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  padding: 0 8px 8px; gap: 1px;
+}
+.dp-day {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-family: var(--font-mono);
+  color: var(--text-2); cursor: pointer; border-radius: 5px;
+  transition: background .1s, color .1s;
+  border: 1px solid transparent;
+}
+.dp-day:hover { background: var(--bg-3); color: var(--text-1); }
+.dp-day.other-month { color: var(--text-3); }
+.dp-day.today {
+  border-color: rgba(245,166,35,.3);
+  color: var(--amber);
+  font-weight: 500;
+}
+.dp-day.selected {
+  background: var(--amber);
+  color: #000; font-weight: 600;
+  border-color: transparent;
+}
+.dp-day.selected:hover { background: #ffb83d; }
+.dp-day.disabled { opacity: .25; pointer-events: none; }
+
+/* month/year grid */
+.dp-grid-3 {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 4px; padding: 10px;
+}
+.dp-grid-4 {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 4px; padding: 10px;
+}
+.dp-pick-item {
+  padding: 8px 4px; text-align: center; border-radius: 5px; cursor: pointer;
+  font-size: 12px; font-family: var(--font-mono); color: var(--text-2);
+  border: 1px solid transparent; transition: .12s;
+}
+.dp-pick-item:hover { background: var(--bg-3); color: var(--text-1); }
+.dp-pick-item.current { color: var(--amber); border-color: rgba(245,166,35,.25); }
+.dp-pick-item.selected { background: var(--amber); color: #000; font-weight: 600; }
+
+/* footer */
+.dp-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+}
+.dp-today-btn {
+  font-size: 11.5px; font-family: var(--font-mono); color: var(--amber);
+  background: transparent; border: none; cursor: pointer; padding: 2px 0;
+  transition: opacity .12s;
+}
+.dp-today-btn:hover { opacity: .75; }
+.dp-clear-btn {
+  font-size: 11.5px; font-family: var(--font-mono); color: var(--text-3);
+  background: transparent; border: none; cursor: pointer; padding: 2px 0;
+  transition: color .12s;
+}
+.dp-clear-btn:hover { color: var(--red); }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function() {
+  // ── DIRTY STATE ──
+  let isDirty = false;
+  window.markDirty = function() {
+    if (!isDirty) {
+      isDirty = true;
+      const ind = document.getElementById('dirtyIndicator');
+      const btn = document.getElementById('saveBtn');
+      if (ind) ind.style.display = 'flex';
+      if (btn) btn.style.boxShadow = '0 0 24px rgba(245,166,35,.6)';
+    }
+  };
+
+  // ── SAVE ──
+  window.handleSave = function() {
+    const btn = document.getElementById('saveBtn');
+    btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid rgba(0,0,0,.3);border-top-color:#000;animation:_spin .6s linear infinite;vertical-align:middle;"></span> Saving…';
+    if (!document.getElementById('_spinStyle')) {
+      const s = document.createElement('style');
+      s.id = '_spinStyle';
+      s.textContent = '@keyframes _spin{to{transform:rotate(360deg)}}';
+      document.head.appendChild(s);
+    }
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = '✓ Saved';
+      btn.style.background = 'var(--green)';
+      isDirty = false;
+      const ind = document.getElementById('dirtyIndicator');
+      if (ind) ind.style.display = 'none';
+      btn.style.boxShadow = 'none';
+      setTimeout(() => {
+        btn.innerHTML = 'Save Changes';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 1800);
+    }, 1200);
+  };
+
+  // ── DATE PICKER ──
+  const MONTHS       = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const DAYS_SHORT   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+  let dpState = {
+    activeTrigger: null,
+    activeWrapId:  null,
+    view:          'day',
+    cursor:        new Date(),
+    selected:      null,
+  };
+
+  function getPopup() { return document.getElementById('datePicker'); }
+
+  function openDatePicker(wrapId, triggerEl) {
+    const popup = getPopup();
+    if (dpState.activeWrapId === wrapId && popup.style.display !== 'none') {
+      closeDatePicker(); return;
+    }
+    dpState.activeWrapId  = wrapId;
+    dpState.activeTrigger = triggerEl;
+    const wrap   = document.querySelector('[data-dp-id="' + wrapId + '"]');
+    const hidden = wrap.querySelector('.dp-value');
+    dpState.selected = hidden.value ? new Date(hidden.value + 'T00:00:00') : null;
+    dpState.cursor   = dpState.selected ? new Date(dpState.selected) : new Date();
+    dpState.view     = 'day';
+    document.querySelectorAll('.dp-trigger').forEach(t => t.classList.remove('active'));
+    triggerEl.classList.add('active');
+    renderDpDay();
+    showDpView('day');
+    popup.style.display = 'block';
+    positionPopup(triggerEl, popup);
+  }
+
+  function closeDatePicker() {
+    const popup = getPopup();
+    if (popup) popup.style.display = 'none';
+    document.querySelectorAll('.dp-trigger').forEach(t => t.classList.remove('active'));
+    dpState.activeWrapId  = null;
+    dpState.activeTrigger = null;
+  }
+
+  function clearDateById(wrapId) {
+    dpState.selected = null;
+    const wrap = document.querySelector('[data-dp-id="' + wrapId + '"]');
+    if (!wrap) return;
+    wrap.querySelector('.dp-value').value = '';
+    const disp = wrap.querySelector('.dp-display');
+    disp.textContent = 'Select date';
+    disp.classList.remove('has-val');
+    wrap.querySelector('.dp-clear').style.display = 'none';
+    window.markDirty();
+  }
+
+  function positionPopup(trigger, popup) {
+    const rect = trigger.getBoundingClientRect();
+    const popW = 272, popH = 340;
+    let top  = rect.bottom + 6;
+    let left = rect.left;
+    if (left + popW > window.innerWidth  - 8) left = window.innerWidth  - popW - 8;
+    if (top  + popH > window.innerHeight - 8) top  = rect.top - popH - 6;
+    if (left < 8) left = 8;
+    popup.style.top  = top  + 'px';
+    popup.style.left = left + 'px';
+  }
+
+  function dpNav(dir) {
+    if (dpState.view === 'day') {
+      dpState.cursor.setMonth(dpState.cursor.getMonth() + dir);
+      renderDpDay();
+    } else if (dpState.view === 'month') {
+      dpState.cursor.setFullYear(dpState.cursor.getFullYear() + dir);
+      renderDpMonth();
+    } else {
+      dpState.cursor.setFullYear(dpState.cursor.getFullYear() + dir * 12);
+      renderDpYear();
+    }
+  }
+
+  function toggleDpView(view) {
+    if (dpState.view === view) { dpState.view = 'day'; showDpView('day'); renderDpDay(); return; }
+    dpState.view = view;
+    showDpView(view);
+    if (view === 'month') renderDpMonth();
+    else renderDpYear();
+  };
+
+  function showDpView(v) {
+    document.getElementById('dpDayView').style.display   = v === 'day'   ? '' : 'none';
+    document.getElementById('dpMonthView').style.display = v === 'month' ? '' : 'none';
+    document.getElementById('dpYearView').style.display  = v === 'year'  ? '' : 'none';
+  }
+
+  function renderDpDay() {
+    const c = dpState.cursor;
+    document.getElementById('dpMonthBtn').textContent = MONTHS[c.getMonth()];
+    document.getElementById('dpYearBtn').textContent  = c.getFullYear();
+    const today       = new Date();
+    const firstDay    = new Date(c.getFullYear(), c.getMonth(), 1).getDay();
+    const daysInMonth = new Date(c.getFullYear(), c.getMonth() + 1, 0).getDate();
+    const daysInPrev  = new Date(c.getFullYear(), c.getMonth(), 0).getDate();
+    let html = '';
+    for (let i = firstDay - 1; i >= 0; i--)
+      html += '<div class="dp-day other-month">' + (daysInPrev - i) + '</div>';
+    for (let i = 1; i <= daysInMonth; i++) {
+      const isToday    = i === today.getDate() && c.getMonth() === today.getMonth() && c.getFullYear() === today.getFullYear();
+      const isSelected = dpState.selected && dpState.selected.getDate() === i && dpState.selected.getMonth() === c.getMonth() && dpState.selected.getFullYear() === c.getFullYear();
+      const cls = 'dp-day' + (isToday ? ' today' : '') + (isSelected ? ' selected' : '');
+      html += '<div class="' + cls + '" data-day="' + i + '">' + i + '</div>';
+    }
+    const total = firstDay + daysInMonth;
+    const rem   = total % 7 === 0 ? 0 : 7 - (total % 7);
+    for (let i = 1; i <= rem; i++)
+      html += '<div class="dp-day other-month">' + i + '</div>';
+    document.getElementById('dpDays').innerHTML = html;
+  }
+
+  function renderDpMonth() {
+    document.getElementById('dpMonthBtn').textContent = 'Month';
+    document.getElementById('dpYearBtn').textContent  = dpState.cursor.getFullYear();
+    const cur = dpState.cursor.getMonth();
+    let html = '';
+    MONTHS_SHORT.forEach((m, i) => {
+      const cls = 'dp-month-item' + (i === cur ? ' selected' : '');
+      html += '<div class="' + cls + '" data-month="' + i + '">' + m + '</div>';
+    });
+    document.getElementById('dpMonths').innerHTML = html;
+  }
+
+  function renderDpYear() {
+    const base = Math.floor(dpState.cursor.getFullYear() / 12) * 12;
+    document.getElementById('dpMonthBtn').textContent = base + ' – ' + (base + 11);
+    document.getElementById('dpYearBtn').textContent  = '';
+    const cur = dpState.cursor.getFullYear();
+    let html = '';
+    for (let y = base; y < base + 12; y++) {
+      const cls = 'dp-year-item' + (y === cur ? ' selected' : '');
+      html += '<div class="' + cls + '" data-year="' + y + '">' + y + '</div>';
+    }
+    document.getElementById('dpYears').innerHTML = html;
+  }
+
+  function dpSelectDay(d) {
+    dpState.selected = new Date(dpState.cursor.getFullYear(), dpState.cursor.getMonth(), d);
+    applyDate(dpState.selected);
+    renderDpDay();
+    setTimeout(closeDatePicker, 140);
+  }
+
+  function dpSelectMonth(m) {
+    dpState.cursor.setMonth(m);
+    dpState.view = 'day';
+    showDpView('day');
+    renderDpDay();
+  }
+
+  function dpSelectYear(y) {
+    dpState.cursor.setFullYear(y);
+    dpState.view = 'month';
+    showDpView('month');
+    renderDpMonth();
+  }
+
+  function dpSelectToday() {
+    dpState.selected = new Date();
+    dpState.cursor   = new Date();
+    applyDate(dpState.selected);
+    renderDpDay();
+    setTimeout(closeDatePicker, 140);
+  }
+
+  function dpClearActive() {
+    dpState.selected = null;
+    const wrap = document.querySelector('[data-dp-id="' + dpState.activeWrapId + '"]');
+    if (!wrap) return;
+    wrap.querySelector('.dp-value').value = '';
+    const disp = wrap.querySelector('.dp-display');
+    disp.textContent = 'Select date';
+    disp.classList.remove('has-val');
+    wrap.querySelector('.dp-clear').style.display = 'none';
+    renderDpDay();
+    window.markDirty();
+  }
+
+  function applyDate(date) {
+    const wrap = document.querySelector('[data-dp-id="' + dpState.activeWrapId + '"]');
+    if (!wrap) return;
+    const iso  = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2,'0') + '-' + String(date.getDate()).padStart(2,'0');
+    const disp = MONTHS_SHORT[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+    wrap.querySelector('.dp-value').value = iso;
+    const dispEl = wrap.querySelector('.dp-display');
+    dispEl.textContent = disp;
+    dispEl.classList.add('has-val');
+    wrap.querySelector('.dp-clear').style.display = '';
+    window.markDirty();
+  }
+
+  // ── INIT DATE PICKER (event delegation, no inline onclick) ──
+  function initDatePicker() {
+    const popup = document.getElementById('datePicker');
+    popup.addEventListener('click', e => e.stopPropagation());
+    document.getElementById('dpPrev').addEventListener('click',     () => dpNav(-1));
+    document.getElementById('dpNext').addEventListener('click',     () => dpNav(1));
+    document.getElementById('dpMonthBtn').addEventListener('click', () => toggleDpView('month'));
+    document.getElementById('dpYearBtn').addEventListener('click',  () => toggleDpView('year'));
+    document.getElementById('dpTodayBtn').addEventListener('click', dpSelectToday);
+    document.getElementById('dpClearBtn').addEventListener('click', dpClearActive);
+
+    // day grid (delegated)
+    document.getElementById('dpDays').addEventListener('click', e => {
+      const d = e.target.closest('[data-day]');
+      if (d && !d.classList.contains('other-month')) dpSelectDay(parseInt(d.dataset.day));
+    });
+    // month grid (delegated)
+    document.getElementById('dpMonths').addEventListener('click', e => {
+      const m = e.target.closest('[data-month]');
+      if (m) dpSelectMonth(parseInt(m.dataset.month));
+    });
+    // year grid (delegated)
+    document.getElementById('dpYears').addEventListener('click', e => {
+      const y = e.target.closest('[data-year]');
+      if (y) dpSelectYear(parseInt(y.dataset.year));
+    });
+
+    // bind each .dp-wrap trigger
+    document.querySelectorAll('.dp-wrap').forEach(wrap => {
+      const trigger = wrap.querySelector('.dp-trigger');
+      const clearEl = wrap.querySelector('.dp-clear');
+      const id      = wrap.dataset.dpId;
+      trigger.addEventListener('click', e => { e.stopPropagation(); openDatePicker(id, trigger); });
+      if (clearEl) clearEl.addEventListener('click', e => { e.stopPropagation(); clearDateById(id); });
+    });
+  }
+  initDatePicker();
+
+  // close on outside click
+  document.addEventListener('click', function() {
+    window.closeDatePicker();
+    document.querySelectorAll('.custom-select.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.custom-select-trigger')?.classList.remove('open');
+    });
+  });
+  window.addEventListener('resize', function() {
+    if (dpState.activeTrigger) positionPopup(dpState.activeTrigger, getPopup());
+  });
+
+  // ── THEME TOGGLE ──
+  let isLight = false;
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    isLight = !isLight;
+    document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+    document.getElementById('themeIcon').className = isLight ? 'bi bi-moon' : 'bi bi-sun';
+  });
+
+  // ── SIDEBAR ──
+  document.getElementById('sidebarToggle').addEventListener('click', function() {
+    const collapsed = document.getElementById('sidebar').classList.toggle('collapsed');
+    document.getElementById('toggleIcon').className = collapsed ? 'bi bi-layout-sidebar' : 'bi bi-layout-sidebar-reverse';
+  });
+
+  // ── CUSTOM SELECT ──
+  function initCustomSelects() {
+    document.querySelectorAll('select.form-control').forEach(sel => {
+      const options = Array.from(sel.options).map(o => ({
+        value: o.value || o.text,
+        label: o.text,
+        selected: o.selected,
+        placeholder: !o.value && o.index === 0 && o.text.toLowerCase().startsWith('select'),
+      }));
+      const selectedOpt = options.find(o => o.selected) || options[0];
+
+      const wrap = document.createElement('div');
+      wrap.className = 'custom-select';
+
+      const trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.className = 'custom-select-trigger' + (selectedOpt?.placeholder ? ' placeholder-val' : '');
+      trigger.innerHTML = '<span class="cs-val">' + (selectedOpt?.label || '') + '</span>'
+        + '<svg class="cs-arrow" viewBox="0 0 10 6" width="10" height="6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l4 4 4-4"/></svg>';
+
+      const dropdown = document.createElement('div');
+      dropdown.className = 'custom-select-dropdown';
+
+      options.forEach(opt => {
+        const item = document.createElement('div');
+        item.className = 'cs-option' + (opt.selected ? ' selected' : '') + (opt.placeholder ? ' placeholder-opt' : '');
+        item.textContent = opt.label;
+        item.dataset.value = opt.value;
+        item.addEventListener('click', function() {
+          dropdown.querySelectorAll('.cs-option').forEach(el => el.classList.remove('selected'));
+          item.classList.add('selected');
+          trigger.querySelector('.cs-val').textContent = opt.label;
+          trigger.classList.remove('placeholder-val');
+          wrap.classList.remove('open');
+          trigger.classList.remove('open');
+          window.markDirty();
+        });
+        dropdown.appendChild(item);
+      });
+
+      wrap.appendChild(trigger);
+      wrap.appendChild(dropdown);
+
+      trigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = wrap.classList.contains('open');
+        document.querySelectorAll('.custom-select.open').forEach(el => {
+          el.classList.remove('open');
+          el.querySelector('.custom-select-trigger')?.classList.remove('open');
+        });
+        if (!isOpen) { wrap.classList.add('open'); trigger.classList.add('open'); }
+      });
+
+      sel.replaceWith(wrap);
+    });
+  }
+  initCustomSelects();
+
+  // ── TABS ──
+  document.querySelectorAll('.page-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+})();
+</script>
+</body>
