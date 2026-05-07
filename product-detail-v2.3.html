@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>32GB USB Drive — Marble ERP</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ── INLINE SVG ICONS ── */
@@ -515,7 +516,34 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
   display: flex; align-items: center; gap: 6px;
   font-size: 12px; color: var(--text-2); cursor: pointer;
 }
-.radio-opt input { accent-color: var(--amber); width: 13px; height: 13px; cursor: pointer; }
+.radio-opt input {
+  width: 13px; height: 13px;
+  appearance: none; -webkit-appearance: none;
+  margin: 0; cursor: pointer;
+  border: 1px solid var(--border-md);
+  border-radius: 50%;
+  background: var(--bg-3);
+  display: inline-grid; place-content: center;
+  transition: background .12s, border-color .12s, box-shadow .12s;
+}
+.radio-opt input::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #000;
+  transform: scale(0);
+  transition: transform .12s;
+}
+.radio-opt input:hover { border-color: rgba(245,166,35,.45); }
+.radio-opt input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--amber-glow);
+}
+.radio-opt input:checked {
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.radio-opt input:checked::before { transform: scale(1); }
 .radio-opt.checked { color: var(--text-1); }
 
 /* ── BTN XS ── */
@@ -1324,6 +1352,22 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
     popup.style.left = left + 'px';
   }
 
+  function syncDatePickerPosition() {
+    const popup = getPopup();
+    if (dpState.activeTrigger && popup && popup.style.display !== 'none') {
+      positionPopup(dpState.activeTrigger, popup);
+    }
+  }
+
+  let dpPositionFrame = null;
+  function scheduleDatePickerPositionUpdate() {
+    if (dpPositionFrame !== null) return;
+    dpPositionFrame = requestAnimationFrame(() => {
+      dpPositionFrame = null;
+      syncDatePickerPosition();
+    });
+  }
+
   function dpNav(dir) {
     if (dpState.view === 'day') {
       dpState.cursor.setMonth(dpState.cursor.getMonth() + dir);
@@ -1495,15 +1539,14 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
 
   // close on outside click
   document.addEventListener('click', function() {
-    window.closeDatePicker();
+    closeDatePicker();
     document.querySelectorAll('.custom-select.open').forEach(el => {
       el.classList.remove('open');
       el.querySelector('.custom-select-trigger')?.classList.remove('open');
     });
   });
-  window.addEventListener('resize', function() {
-    if (dpState.activeTrigger) positionPopup(dpState.activeTrigger, getPopup());
-  });
+  window.addEventListener('resize', scheduleDatePickerPositionUpdate);
+  document.addEventListener('scroll', scheduleDatePickerPositionUpdate, true);
 
   // ── THEME TOGGLE ──
   let isLight = false;
@@ -1564,6 +1607,7 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
 
       trigger.addEventListener('click', function(e) {
         e.stopPropagation();
+        closeDatePicker();
         const isOpen = wrap.classList.contains('open');
         document.querySelectorAll('.custom-select.open').forEach(el => {
           el.classList.remove('open');
