@@ -627,6 +627,68 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
 }
 .status-dot-green { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
 
+/* ── ALERTS (toast top-center) ── */
+.alert-container {
+  position: fixed;
+  top: calc(var(--topbar-h) + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
+  width: 420px;
+  pointer-events: none;
+}
+.alert {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 11px 14px;
+  border-radius: 7px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4), 0 2px 6px rgba(0,0,0,.2);
+  pointer-events: all;
+  animation: toastIn .2s cubic-bezier(.2,0,.2,1) both;
+}
+[data-theme="light"] .alert {
+  box-shadow: 0 6px 18px rgba(0,0,0,.12), 0 2px 5px rgba(0,0,0,.07);
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-10px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.alert-info    { background: #0d2137; border: 1px solid #1a4060; border-left: 3px solid var(--blue); }
+.alert-warning { background: #201508; border: 1px solid #4a3010; border-left: 3px solid var(--orange); }
+.alert-error   { background: #200808; border: 1px solid #4a1010; border-left: 3px solid var(--red); }
+[data-theme="light"] .alert-info    { background: #ddeefa; border: 1px solid #9ac8f0; border-left: 3px solid var(--blue); }
+[data-theme="light"] .alert-warning { background: #fef0d6; border: 1px solid #f0c060; border-left: 3px solid var(--orange); }
+[data-theme="light"] .alert-error   { background: #fde0e0; border: 1px solid #f0a0a0; border-left: 3px solid var(--red); }
+.alert-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.alert-info    .alert-icon { color: var(--blue); }
+.alert-warning .alert-icon { color: var(--orange); }
+.alert-error   .alert-icon { color: var(--red); }
+.alert-body { flex: 1; min-width: 0; }
+.alert-title { font-size: 12px; font-weight: 500; font-family: var(--font-mono); margin-bottom: 2px; }
+.alert-info    .alert-title { color: var(--blue); }
+.alert-warning .alert-title { color: var(--orange); }
+.alert-error   .alert-title { color: var(--red); }
+.alert-msg { font-size: 11.5px; font-family: var(--font-mono); line-height: 1.5; color: var(--text-2); }
+[data-theme="light"] .alert-info    .alert-msg { color: #1a4a78; }
+[data-theme="light"] .alert-warning .alert-msg { color: #7a4a0a; }
+[data-theme="light"] .alert-error   .alert-msg { color: #7a1a1a; }
+.alert-close {
+  flex-shrink: 0; background: none; border: none; cursor: pointer;
+  padding: 2px; opacity: .45; display: flex; align-items: center;
+  transition: opacity .12s;
+}
+.alert-info    .alert-close { color: var(--blue); }
+.alert-warning .alert-close { color: var(--orange); }
+.alert-error   .alert-close { color: var(--red); }
+.alert-close:hover { opacity: 1; }
+.alert.dismissing {
+  animation: toastOut .16s ease forwards;
+  pointer-events: none;
+}
+@keyframes toastOut {
+  to { opacity: 0; transform: translateY(-8px) scale(.97); }
+}
+
 /* ── LEFT / RIGHT COLUMNS ── */
 .col-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
 .col-right { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
@@ -783,9 +845,16 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
                 <label class="form-label">ID</label>
                 <input type="text" class="form-control" value="DEMO_USB32G" oninput="markDirty()">
               </div>
-              <div class="form-group">
-                <label class="form-label">Name</label>
-                <input type="text" class="form-control" value="32GB USB Drive" oninput="markDirty()">
+              <div class="form-group" id="fg-name">
+                <label class="form-label">
+                  Name
+                  <span style="color:var(--red);margin-left:2px;">*</span>
+                </label>
+                <input type="text" class="form-control" id="input-name" value="32GB USB Drive" oninput="markDirty(); clearFieldError('fg-name', 'input-name')">
+                <div class="field-error" id="err-name" style="display:none;">
+                  <svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor" style="flex-shrink:0;"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>
+                  Product name is required
+                </div>
               </div>
               <div class="form-group">
                 <label class="form-label">Description</label>
@@ -1099,6 +1168,22 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
 </div>
 
 <style>
+/* ── FIELD VALIDATION ── */
+.field-error {
+  display: flex; align-items: center; gap: 5px;
+  margin-top: 5px; font-size: 11px; color: var(--red);
+  font-family: var(--font-mono);
+  animation: errIn .15s ease both;
+}
+@keyframes errIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.form-control.has-error {
+  border-color: rgba(248,113,113,.55) !important;
+  box-shadow: 0 0 0 3px rgba(248,113,113,.06) !important;
+}
+
 /* ── DATE PICKER TRIGGER ── */
 .dp-wrap { position: relative; }
 .dp-trigger {
@@ -1261,6 +1346,15 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
 
   // ── SAVE ──
   window.handleSave = function() {
+    // validate required fields
+    const nameInput = document.getElementById('input-name');
+    if (!nameInput.value.trim()) {
+      showFieldError('fg-name', 'input-name', 'err-name');
+      nameInput.focus();
+      showAlert('error');
+      return;
+    }
+
     const btn = document.getElementById('saveBtn');
     btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid rgba(0,0,0,.3);border-top-color:#000;animation:_spin .6s linear infinite;vertical-align:middle;"></span> Saving…';
     if (!document.getElementById('_spinStyle')) {
@@ -1277,6 +1371,7 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
       const ind = document.getElementById('dirtyIndicator');
       if (ind) ind.style.display = 'none';
       btn.style.boxShadow = 'none';
+      showAlert('info');
       setTimeout(() => {
         btn.innerHTML = 'Save Changes';
         btn.style.background = '';
@@ -1548,6 +1643,79 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
   window.addEventListener('resize', scheduleDatePickerPositionUpdate);
   document.addEventListener('scroll', scheduleDatePickerPositionUpdate, true);
 
+  // ── ALERTS ──
+  window.dismissAlert = function(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('dismissing');
+    el.addEventListener('animationend', () => el.remove(), { once: true });
+  };
+
+  function showAlert(type) {
+    const idMap = { info: 'alert-info', warning: 'alert-warning', error: 'alert-error' };
+    const id = idMap[type];
+    let el = document.getElementById(id);
+    // recreate if previously dismissed
+    if (!el) {
+      const container  = document.getElementById('alertContainer');
+      const titles     = { info: 'Information', warning: 'Warning', error: 'Error' };
+      const msgs       = {
+        info:    'Your changes have been saved and will take effect within a few minutes.',
+        warning: 'Shipping weight is missing. This product may not be eligible for certain shipping methods.',
+        error:   'Failed to save changes. Product name is required and cannot be empty.',
+      };
+      const icons = { info: 'bi-info-circle', warning: 'bi-exclamation-triangle', error: 'bi-x-circle' };
+      el = document.createElement('div');
+      el.id = id;
+      el.className = 'alert alert-' + type;
+      el.innerHTML =
+        '<i class="bi ' + icons[type] + ' alert-icon"></i>' +
+        '<div class="alert-body">' +
+          '<div class="alert-title">' + titles[type] + '</div>' +
+          '<div class="alert-msg">' + msgs[type] + '</div>' +
+        '</div>' +
+        '<button class="alert-close" onclick="dismissAlert(\'' + id + '\')">' +
+          '<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>' +
+        '</button>';
+      container.appendChild(el);
+    } else {
+      // re-trigger animation
+      el.style.animation = 'none';
+      requestAnimationFrame(() => { el.style.animation = ''; });
+    }
+  }
+
+  // ── FIELD VALIDATION ──
+  function showFieldError(groupId, inputId, msgId) {
+    const input = document.getElementById(inputId);
+    const err   = document.getElementById(msgId);
+    if (!input || !err) return;
+    input.classList.add('has-error');
+    err.style.display = 'flex';
+    // re-trigger animation
+    err.style.animation = 'none';
+    requestAnimationFrame(() => { err.style.animation = ''; });
+  }
+
+  window.clearFieldError = function(groupId, inputId) {
+    const input = document.getElementById(inputId);
+    const err   = document.getElementById('err-' + inputId.replace('input-', ''));
+    if (input) input.classList.remove('has-error');
+    if (err)   err.style.display = 'none';
+  };
+
+  // Name field — required, validate on blur
+  const nameInput = document.getElementById('input-name');
+  if (nameInput) {
+    nameInput.addEventListener('blur', function() {
+      if (!this.value.trim()) {
+        showFieldError('fg-name', 'input-name', 'err-name');
+      } else {
+        window.clearFieldError('fg-name', 'input-name');
+      }
+    });
+  }
+
   // ── THEME TOGGLE ──
   let isLight = false;
   document.getElementById('themeToggle').addEventListener('click', function() {
@@ -1631,4 +1799,37 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
 
 })();
 </script>
+<!-- ALERT TOASTS (fixed top-center) -->
+<div id="alertContainer" class="alert-container">
+  <div class="alert alert-info" id="alert-info">
+    <i class="bi bi-info-circle alert-icon"></i>
+    <div class="alert-body">
+      <div class="alert-title">Information</div>
+      <div class="alert-msg">Your changes have been saved and will take effect within a few minutes.</div>
+    </div>
+    <button class="alert-close" onclick="dismissAlert('alert-info')">
+      <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+    </button>
+  </div>
+  <div class="alert alert-warning" id="alert-warning">
+    <i class="bi bi-exclamation-triangle alert-icon"></i>
+    <div class="alert-body">
+      <div class="alert-title">Warning</div>
+      <div class="alert-msg">Shipping weight is missing. This product may not be eligible for certain shipping methods.</div>
+    </div>
+    <button class="alert-close" onclick="dismissAlert('alert-warning')">
+      <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+    </button>
+  </div>
+  <div class="alert alert-error" id="alert-error">
+    <i class="bi bi-x-circle alert-icon"></i>
+    <div class="alert-body">
+      <div class="alert-title">Error</div>
+      <div class="alert-msg">Failed to save changes. Product name is required and cannot be empty.</div>
+    </div>
+    <button class="alert-close" onclick="dismissAlert('alert-error')">
+      <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+    </button>
+  </div>
+</div>
 </body>
